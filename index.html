@@ -93,6 +93,58 @@
     .dot-green { background: #12221A; }
 
     /* ==========================================================================
+       FULLSCREEN VIDEO PRELOADER
+       ========================================================================== */
+    #video-intro-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      background-color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    #video-intro-container.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    #intro-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .skip-btn {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: var(--font-heading);
+      transition: all 0.3s ease;
+      z-index: 10000;
+    }
+
+    .skip-btn:hover {
+      background: var(--accent-neon);
+      color: #000;
+      border-color: var(--accent-neon);
+    }
+
+    /* ==========================================================================
        CENTRAL HUB & 7 SURROUNDING CARDS LAYOUT
        ========================================================================== */
     .portfolio-wrapper {
@@ -354,6 +406,15 @@
 </head>
 <body>
 
+  <!-- Fullscreen Video Intro (Считывает файл intro.mp4 из корневой папки на GitHub) -->
+  <div id="video-intro-container">
+    <video id="intro-video" autoplay muted playsinline>
+      <source src="intro.mp4" type="video/mp4">
+      Ваш браузер не поддерживает автозапуск видео.
+    </video>
+    <button class="skip-btn" onclick="closeIntro()">Пропустить интро ➔</button>
+  </div>
+
   <!-- Top Bar -->
   <div class="top-bar">
     <div class="brand">NAT SLATVICKAYA <span>/ 2D</span></div>
@@ -454,6 +515,7 @@
   </div>
 
   <script>
+    // База данных кейсов
     const PROJECTS_DATABASE = {
       case1: { title: "Cyber Scratch", subtitle: "Frame-by-Frame 2D", mediaSrc: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=80", description: "Кадровая классическая 2D-анимация с динамическим таймингом." },
       case2: { title: "Cat Rampage", subtitle: "Spine 2D Rigging", mediaSrc: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=1200&q=80", description: "Игровой маскот с настроенной костной структурой." },
@@ -465,13 +527,33 @@
       cv: { title: "Nat Slatvickaya — CV / About", subtitle: "2D Animator", mediaSrc: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1200&q=80", description: "Привет! Я 2D-аниматор.<br><br><b>Email:</b> n.slatvickaya@gmail.com<br><b>Telegram:</b> @nataly_anim" }
     };
 
+    // Смена фона
     function changeBg(color, element) {
       document.body.style.backgroundColor = color;
       document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
       element.classList.add('active');
     }
 
-    // Eye tracking
+    // Обработка скрытия интро-видео
+    const videoContainer = document.getElementById('video-intro-container');
+    const introVideo = document.getElementById('intro-video');
+
+    function closeIntro() {
+      if (videoContainer) {
+        videoContainer.classList.add('hidden');
+        // Ставим видео на паузу после скрытия, чтобы не тратить ресурсы
+        if (introVideo) introVideo.pause();
+      }
+    }
+
+    if (introVideo) {
+      // Автоматическое скрытие по завершении видео
+      introVideo.addEventListener('ended', closeIntro);
+      // Если видео не загрузилось или заблокировано
+      introVideo.addEventListener('error', closeIntro);
+    }
+
+    // Слежение глаз за курсором
     const pupilLeft = document.getElementById('pupil-left');
     const pupilRight = document.getElementById('pupil-right');
     document.addEventListener('mousemove', (e) => {
@@ -486,6 +568,7 @@
       }
     });
 
+    // Открытие попапов
     function openPopup(key) {
       const data = PROJECTS_DATABASE[key];
       if (!data) return;
@@ -512,3 +595,27 @@
   </script>
 </body>
 </html>
+
+Gemini 3.5 Flash Lite
+
+Размышление
+Позволяет модели рассуждать пошагово перед ответом.
+
+Планирование
+Разбивает сложные задачи на план и отслеживает прогресс.
+
+
+Поиск в интернете
+Поиск в интернете и извлечение информации со страниц.
+
+Интерпретатор кода
+Запуск кода для вычислений и анализа данных.
+
+Терминал
+Выполнение команд в песочнице.
+
+Файлы
+Создание, чтение и редактирование файлов.
+
+Графики
+Генерация графиков и визуализаций.
