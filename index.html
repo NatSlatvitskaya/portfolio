@@ -8,19 +8,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
   <style>
-    /* ==========================================================================
-       1. ПЕРЕМЕННЫЕ ЦВЕТОВ (Фон можно менять через переключатель)
-       ========================================================================== */
     :root {
-      --bg-green: #20E298;        /* Зеленый цвет по умолчанию (из кадра в конце интро) */
-      --cat-color: #121214;       /* Темный цвет маскота и царапин */
+      --bg-color: #20E298;        /* Зеленый цвет по умолчанию */
+      --cat-color: #121214;       /* Темный цвет папок и текста */
       --accent-neon: #20E298;
-      
-      --card-bg: rgba(18, 18, 20, 0.9); /* Полупрозрачный темный для попапа */
+      --card-bg: rgba(18, 18, 20, 0.95);
       --card-border: rgba(255, 255, 255, 0.08);
       --text-light: #F3F4F6;
       --text-muted: #9CA3AF;
-      
       --font-heading: 'Unbounded', sans-serif;
       --font-body: 'Plus Jakarta Sans', sans-serif;
     }
@@ -32,13 +27,18 @@
     }
 
     body {
-      background-color: var(--bg-green);
+      /* Загружаем реальный кадр bg.png как фоновое изображение на весь экран */
+      background-image: url('bg.png');
+      background-size: cover;
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      background-color: var(--bg-color);
       font-family: var(--font-body);
-      color: var(--cat-color); /* Изначально тексты темные для контраста с зеленым */
+      color: var(--cat-color);
       min-height: 100vh;
-      overflow: hidden; /* Ограничиваем скролл, всё на одном экране */
+      overflow: hidden;
       position: relative;
-      transition: background-color 0.5s ease;
+      transition: background-image 0.5s ease, background-color 0.5s ease;
     }
 
     /* ==========================================================================
@@ -88,26 +88,14 @@
     }
 
     .skip-btn:hover {
-      background: var(--bg-green);
+      background: var(--bg-color);
       color: #000;
-      border-color: var(--bg-green);
+      border-color: var(--bg-color);
     }
 
     /* ==========================================================================
-       ВЕРХНЯЯ ЧАСТЬ ЭКРАНА (Царапины и Шапка)
+       ВЕРХНЯЯ ПАНЕЛЬ И НАСТРОЙКИ
        ========================================================================== */
-    .top-scratches {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 1400px;
-      height: auto;
-      pointer-events: none;
-      z-index: 1;
-    }
-
     .top-bar {
       position: absolute;
       top: 30px;
@@ -130,7 +118,7 @@
       color: var(--cat-color);
     }
 
-    /* Выбор цвета фона */
+    /* Выбор цвета фона (позволяет менять картинку на bg_purple.png или bg_grey.png) */
     .theme-picker {
       display: flex;
       align-items: center;
@@ -165,28 +153,32 @@
     .dot-grey { background: #A3A3A3; }
 
     /* ==========================================================================
-       НИЖНЯЯ ЧАСТЬ ЭКРАНА (Огромный кот из кадра интро)
+       СЛЕЖАЩИЕ ГЛАЗА (Накладываются поверх фоновой картинки bg.png)
        ========================================================================== */
-    .bottom-cat-wrapper {
+    .eyes-container {
       position: absolute;
-      bottom: -10px;
+      bottom: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
       max-width: 1200px;
-      height: auto;
+      /* Соотношение сторон должно соответствовать оригинальному кадру */
+      aspect-ratio: 1200 / 600;
       z-index: 2;
-      pointer-events: none; /* Дает прокликать сквозь пустые места */
+      pointer-events: none;
     }
 
-    .cat-svg-huge {
+    .interactive-eyes {
+      position: absolute;
+      /* Подстраиваем координаты точно под отверстия для глаз на фоновом рисунке */
+      bottom: 2%; 
+      left: 0;
       width: 100%;
       height: auto;
-      display: block;
     }
 
     /* ==========================================================================
-       КАРТОЧКИ КЕЙСОВ В ВИДЕ ПАПОК
+       ПАПКИ КЕЙСОВ
        ========================================================================== */
     .folders-container {
       position: absolute;
@@ -212,7 +204,6 @@
       transform: scale(1.15) translateY(-5px);
     }
 
-    /* Иконка папки на CSS */
     .folder-icon {
       position: relative;
       width: 70px;
@@ -223,7 +214,6 @@
       transition: background-color 0.3s;
     }
 
-    /* Выступающий ярлычок папки сверху */
     .folder-icon::before {
       content: '';
       position: absolute;
@@ -236,7 +226,6 @@
       transition: background-color 0.3s;
     }
 
-    /* Внутренний листок в папке (появляется при наведении) */
     .folder-icon::after {
       content: '';
       position: absolute;
@@ -255,7 +244,6 @@
       transform: translateY(-8px);
     }
 
-    /* Подпись под папкой */
     .folder-title {
       margin-top: 10px;
       font-family: var(--font-heading);
@@ -271,7 +259,7 @@
       text-overflow: ellipsis;
     }
 
-    /* Точечное позиционирование 7 папок на зеленом поле */
+    /* Расположение папок в свободных зонах над котом */
     .folder-1 { top: 22%; left: 15%; }
     .folder-2 { top: 28%; left: 32%; }
     .folder-3 { top: 20%; left: 50%; transform: translateX(-50%); }
@@ -299,7 +287,7 @@
     }
 
     .dock-btn {
-      color: var(--bg-green);
+      color: var(--bg-color);
       text-decoration: none;
       font-size: 0.8rem;
       font-weight: 700;
@@ -374,12 +362,12 @@
       justify-content: center;
     }
 
-    .popup-close:hover { background: var(--bg-green); color: #000; }
+    .popup-close:hover { background: var(--bg-color); color: #000; }
 
     .popup-title {
       font-family: var(--font-heading);
       font-size: 1.6rem;
-      color: var(--bg-green);
+      color: var(--bg-color);
       margin-bottom: 6px;
     }
 
@@ -399,10 +387,11 @@
 
     .popup-text { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
 
-    /* Адаптивность для мобильных экранов */
+    /* Мобильная адаптивность */
     @media (max-width: 768px) {
       body {
-        overflow-y: auto; /* На мобилке разрешаем прокрутку */
+        overflow-y: auto;
+        background-attachment: scroll;
       }
       .folders-container {
         position: relative;
@@ -424,7 +413,7 @@
         width: 100%;
         height: auto;
       }
-      .bottom-cat-wrapper {
+      .eyes-container {
         position: fixed;
         bottom: -50px;
         width: 140%;
@@ -443,84 +432,57 @@
     <button class="skip-btn" onclick="closeIntro()">Пропустить интро ➔</button>
   </div>
 
-  <!-- Верхняя темная графика (Царапины из кадра интро) -->
-  <svg class="top-scratches" viewBox="0 0 1400 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Имитация царапин и пятен темного цвета сверху экрана -->
-    <path d="M 0,0 L 1400,0 L 1400,30 C 1300,50 1100,20 1000,60 C 850,110 700,5 600,45 C 450,100 200,20 0,60 Z" fill="#121214"/>
-    <path d="M 120,40 C 150,80 180,30 200,50 C 220,70 190,90 170,80 Z" fill="#121214"/>
-    <path d="M 850,20 C 880,50 920,30 940,60 C 900,80 870,50 850,20 Z" fill="#121214"/>
-  </svg>
-
   <!-- Верхняя панель управления -->
   <div class="top-bar">
     <div class="brand">NAT SLATVICKAYA <span>/ 2D</span></div>
     
-    <!-- Переключатель фона (передает новый цвет фона кнопкам дока и попапа) -->
+    <!-- Переключатель фона (Загружает bg_purple.png или bg_grey.png) -->
     <div class="theme-picker">
       <span>Фон:</span>
-      <div class="color-dot dot-green active" onclick="changeBg('#20E298', this)"></div>
-      <div class="color-dot dot-purple" onclick="changeBg('#925CFF', this)"></div>
-      <div class="color-dot dot-grey" onclick="changeBg('#A3A3A3', this)"></div>
+      <div class="color-dot dot-green active" onclick="changeBg('bg.png', '#20E298', this)"></div>
+      <div class="color-dot dot-purple" onclick="changeBg('bg_purple.png', '#925CFF', this)"></div>
+      <div class="color-dot dot-grey" onclick="changeBg('bg_grey.png', '#A3A3A3', this)"></div>
     </div>
   </div>
 
-  <!-- 7 папок кейсов на зеленом поле -->
+  <!-- 7 папок кейсов -->
   <div class="folders-container">
-    
     <div class="folder-card folder-1" onclick="openPopup('case1')">
       <div class="folder-icon"></div>
       <div class="folder-title">Cyber Scratch</div>
     </div>
-
     <div class="folder-card folder-2" onclick="openPopup('case2')">
       <div class="folder-icon"></div>
       <div class="folder-title">Cat Rampage</div>
     </div>
-
     <div class="folder-card folder-3" onclick="openPopup('case3')">
       <div class="folder-icon"></div>
       <div class="folder-title">Green Burst</div>
     </div>
-
     <div class="folder-card folder-4" onclick="openPopup('case4')">
       <div class="folder-icon"></div>
       <div class="folder-title">Game FX</div>
     </div>
-
     <div class="folder-card folder-5" onclick="openPopup('case5')">
       <div class="folder-icon"></div>
       <div class="folder-title">Neon Pulse</div>
     </div>
-
     <div class="folder-card folder-6" onclick="openPopup('case6')">
       <div class="folder-icon"></div>
       <div class="folder-title">Sprite Rig</div>
     </div>
-
     <div class="folder-card folder-7" onclick="openPopup('case7')">
       <div class="folder-icon"></div>
       <div class="folder-title">Showreel 26</div>
     </div>
-
   </div>
 
-  <!-- НИЖНЯЯ ЧАСТЬ: Огромный кот со следящими глазами из кадра -->
-  <div class="bottom-cat-wrapper">
-    <svg class="cat-svg-huge" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Тело кота (Срезанное снизу) -->
-      <path d="M 50,600 L 150,180 L 350,380 C 450,330 750,330 850,380 L 1050,180 L 1150,600 Z" fill="#121214"/>
-      
-      <!-- Формы левого и правого глаза (Контур бирюзово-зеленый) -->
-      <path d="M 230,520 C 230,520 320,380 500,420 C 500,420 380,560 230,520 Z" fill="none" stroke="#20E298" stroke-width="8"/>
-      <path d="M 970,520 C 970,520 880,380 700,420 C 700,420 820,560 970,520 Z" fill="none" stroke="#20E298" stroke-width="8"/>
-      
-      <!-- Зрачки кота, движущиеся за мышью -->
-      <g>
-        <!-- Левый зрачок -->
-        <ellipse id="pupil-left" cx="365" cy="470" rx="14" ry="48" fill="#20E298"/>
-        <!-- Правый зрачок -->
-        <ellipse id="pupil-right" cx="835" cy="470" rx="14" ry="48" fill="#20E298"/>
-      </g>
+  <!-- Глаза накладываются поверх фонового рисунка -->
+  <div class="eyes-container">
+    <svg class="interactive-eyes" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Зрачки кота, движущиеся за мышью (настроены точно под отверстия глаз на bg.png) -->
+      <ellipse id="pupil-left" cx="365" cy="480" rx="14" ry="48" fill="#20E298"/>
+      <ellipse id="pupil-right" cx="835" cy="480" rx="14" ry="48" fill="#20E298"/>
     </svg>
   </div>
 
@@ -553,14 +515,22 @@
       cv: { title: "Nat Slatvickaya — CV / About", subtitle: "2D Animator", mediaSrc: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1200&q=80", description: "Привет! Я 2D-аниматор.<br><br><b>Email:</b> n.slatvickaya@gmail.com<br><b>Telegram:</b> @nataly_anim" }
     };
 
-    // Смена фона
-    function changeBg(color, element) {
-      document.body.style.backgroundColor = color;
+    // Смена фона (изменяет фоновую картинку и цвет элементов)
+    function changeBg(bgImage, themeColor, element) {
+      document.body.style.backgroundImage = `url('${bgImage}')`;
+      document.body.style.backgroundColor = themeColor;
       
-      // Настраиваем цвета текста кнопок в доке и попапе под выбранный цвет фона
+      // Обновляем цвета элементов дока
       document.querySelectorAll('.dock-btn').forEach(btn => {
-        btn.style.color = color;
+        btn.style.color = themeColor;
       });
+      
+      // Обновляем цвет зрачков под цвет фона
+      const pupils = [document.getElementById('pupil-left'), document.getElementById('pupil-right')];
+      pupils.forEach(pupil => {
+        if (pupil) pupil.setAttribute('fill', themeColor);
+      });
+
       document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
       element.classList.add('active');
     }
@@ -581,12 +551,12 @@
       introVideo.addEventListener('error', closeIntro);
     }
 
-    // Точная интерактивная логика слежения кошачьих зрачков за курсором
+    // Логика слежения глаз кота
     const pupilLeft = document.getElementById('pupil-left');
     const pupilRight = document.getElementById('pupil-right');
-    const baseLeftX = 365, baseLeftY = 470;
-    const baseRightX = 835, baseRightY = 470;
-    const maxOffset = 25; // Амплитуда движения зрачка внутри глаза
+    const baseLeftX = 365, baseLeftY = 480;
+    const baseRightX = 835, baseRightY = 480;
+    const maxOffset = 25;
 
     document.addEventListener('mousemove', (e) => {
       const { innerWidth, innerHeight } = window;
@@ -597,7 +567,7 @@
         pupilLeft.setAttribute('cx', baseLeftX + mouseX * maxOffset * 2.5);
         pupilLeft.setAttribute('cy', baseLeftY + mouseY * maxOffset * 1.5);
         pupilRight.setAttribute('cx', baseRightX + mouseX * maxOffset * 2.5);
-        pupilRight.setAttribute('cy', baseRightY + mouseY * maxOffset * 1.5);
+        pupilRight.setAttribute('cy', baseRightY + mouseY * mouseX * maxOffset * 1.5);
       }
     });
 
@@ -612,6 +582,10 @@
         <div class="popup-text">${data.description}</div>
       `;
       document.getElementById('popup-overlay').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('popup-overlay').classList.remove('active');
     }
 
     function closePopup() {
