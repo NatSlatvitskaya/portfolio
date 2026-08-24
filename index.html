@@ -98,8 +98,6 @@
       aspect-ratio: 2398 / 1308;
       z-index: 2;
       pointer-events: none;
-      
-      /* Задаем 3D перспективу для сцены */
       perspective: 1500px;
     }
 
@@ -107,13 +105,10 @@
       position: relative;
       width: 100%;
       height: 100%;
-      
-      /* Включаем сохранение 3D слоев */
       transform-style: preserve-3d;
       transition: transform 0.1s ease-out;
     }
 
-    /* Базовый класс для наложения слоев котика */
     .mascot-layer {
       position: absolute;
       inset: 0;
@@ -122,28 +117,18 @@
       background-repeat: no-repeat;
     }
 
-    /* Слой 1: Белки глаз (в самом низу) */
-    .layer-whites {
-      background-image: url('eye_whites.png');
+    /* Слой 1: Глаза (eye.png) на заднем плане */
+    .layer-eyes {
+      background-image: url('eye.png');
       z-index: 1;
-      /* Слегка отодвигаем назад в 3D пространстве */
-      transform: translateZ(-20px);
-    }
-
-    /* Слой 2: Зрачки кота (динамические) */
-    .layer-pupils {
-      background-image: url('pupils.png');
-      z-index: 2;
       transition: transform 0.08s ease-out;
-      /* Находится между белком и телом */
-      transform: translateZ(-5px);
+      transform: translateZ(-10px);
     }
 
-    /* Слой 3: Тело кота (маска с дырками, сверху) */
+    /* Слой 2: Тело кота (cat_body.png) сверху с прозрачными глазницами */
     .layer-body {
       background-image: url('cat_body.png');
       z-index: 3;
-      /* Выносим вперед в 3D пространстве */
       transform: translateZ(15px);
     }
 
@@ -429,13 +414,10 @@
   <div class="mascot-container">
     <div id="mascot-wrapper" class="mascot-wrapper">
       
-      <!-- Слой 1: Белки (подложка) -->
-      <div class="mascot-layer layer-whites"></div>
+      <!-- Слой 1: Глаза (eye.png) на заднем плане -->
+      <div id="layer-eyes" class="mascot-layer layer-eyes"></div>
       
-      <!-- Слой 2: Зрачки (слежение мыши) -->
-      <div id="pupils" class="mascot-layer layer-pupils"></div>
-      
-      <!-- Слой 3: Тело и Маска (сверху) -->
+      <!-- Слой 2: Тело кота (cat_body.png) сверху -->
       <div class="mascot-layer layer-body"></div>
       
     </div>
@@ -478,4 +460,19 @@
       platform: { title: "Платформа", text: "Интерфейсы и брендинг диджитал-продукта." },
       smarty: { title: "Smarty App", text: "Интерфейс мобильного приложения." },
       landing: { title: "Landing Page", text: "Проектирование и верстка промо-страницы." },
-      cv: { title: "О себе", text: "Наташа — графический и бренд-дизайнер. 5 лет о
+      cv: { title: "О себе", text: "Наташа — графический и бренд-дизайнер. 5 лет опыта разработки ярких визуальных концепций." }
+    };
+
+    const mascotWrapper = document.getElementById('mascot-wrapper');
+    const layerEyes = document.getElementById('layer-eyes');
+    
+    const maxTilt = 8;      // Наклон головы в градусах
+    const maxOffset = 16;   // Сдвиг глаз в пикселях
+
+    document.addEventListener('mousemove', (e) => {
+      const { innerWidth, innerHeight } = window;
+      
+      const dx = (e.clientX / innerWidth) - 0.5;
+      const dy = (e.clientY / innerHeight) - 0.5;
+
+      // 1.
