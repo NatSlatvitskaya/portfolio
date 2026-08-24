@@ -433,7 +433,7 @@
       <a href="#" class="icon-circle">⚪</a>
       <div class="dock-divider"></div>
       <a href="https://t.me/your_telegram" target="_blank" class="icon-circle icon-tg">✈️</a>
-      <a href="mailto:your_email@gmail.com" class="icon-circle icon-email">✉️</a>
+      <a href="/cdn-cgi/l/email-protection#eb92849e99b48e868a8287ab8c868a8287c5888486" class="icon-circle icon-email">✉️</a>
     </div>
   </div>
 
@@ -448,7 +448,7 @@
     </div>
   </div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     const DATA = {
       smart: { title: "Smart Project", text: "Описание креативного кейса Smart." },
       memoria: { title: "Memoria", text: "Арт-бук и концепт-дизайн." },
@@ -478,4 +478,28 @@
 
       if (eyesUnderlay) {
         eyesUnderlay.style.transform = `translate(${dx}px, ${dy}px)`;
+      }
+    });
+
+    function openPopup(key) {
+      const p = DATA[key];
+      if (!p) return;
+      document.getElementById('modal-title').innerText = p.title;
+      document.getElementById('modal-desc').innerText = p.text;
+      document.getElementById('popup-overlay').classList.add('active');
+    }
+
+    function closePopup() {
+      document.getElementById('popup-overlay').classList.remove('active');
+    }
     
+    function closePopupOnBg(e) {
+      if (e.target.id === 'popup-overlay') closePopup();
+    }
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePopup();
+    });
+  </script>
+</body>
+</html>
