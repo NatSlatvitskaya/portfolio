@@ -32,7 +32,7 @@
       position: relative;
     }
 
-    /* Фоновые радиальные свечения */
+    /* Фоновое сияние */
     .glow-overlay {
       position: absolute;
       inset: 0;
@@ -84,25 +84,38 @@
       font-weight: 700;
     }
 
-    /* МАСКОТ НА ВЕСЬ ЭКРАН СТРОГО ПО МАКЕТУ */
-    .mascot-fullscreen {
+    /* ==========================================================================
+       ЦЕНТРАЛЬНЫЙ МАСКОТ (Два идеально совмещенных слоя)
+       ========================================================================== */
+    .mascot-container {
       position: absolute;
-      bottom: 0;
+      bottom: -20px;
       left: 50%;
       transform: translateX(-50%);
+      /* Соотношение сторон 2398x1308 = 1.833 */
       width: 100%;
-      max-width: 950px; /* Увеличили размер, чтобы кот занимал правильное пространство */
-      height: 90vh;
+      max-width: 1100px;
+      aspect-ratio: 2398 / 1308;
       z-index: 2;
       pointer-events: none;
     }
 
-    .mascot-body-img {
+    /* Нижний слой: глаза (eye.png), которые двигаются */
+    .eyes-underlay {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
+      background-image: url('eye.png');
+      background-size: contain;
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      z-index: 2;
+      transition: transform 0.08s ease-out;
+    }
+
+    /* Верхний слой: тело кота (cat_body.png) с прозрачными дырками */
+    .cat-body-overlay {
+      position: absolute;
+      inset: 0;
       background-image: url('cat_body.png');
       background-size: contain;
       background-position: center bottom;
@@ -110,46 +123,9 @@
       z-index: 3;
     }
 
-    /* Глаза */
-    .eyes-layer {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-    }
-
-    .eye-socket {
-      position: absolute;
-      width: 65px;
-      height: 50px;
-      overflow: hidden;
-    }
-
-    /* Точные координаты глаз под большой размер маскота */
-    .socket-left {
-      left: 42.5%;
-      top: 48.2%;
-    }
-
-    .socket-right {
-      right: 42.5%;
-      top: 48.2%;
-    }
-
-    .eye-graphic {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: url('eye.png');
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-      transition: transform 0.06s ease-out;
-    }
-
-    /* КАРТОЧКИ ПРОЕКТОВ (Строго по координатам из макета) */
+    /* ==========================================================================
+       КАРТОЧКИ ПРОЕКТОВ (Координаты под новый масштаб кота)
+       ========================================================================== */
     .projects-container {
       position: absolute;
       inset: 0;
@@ -200,19 +176,21 @@
       text-align: center;
     }
 
-    /* Точное положение 9 элементов по вашему референсу */
-    .item-1 { top: 18%; left: 16%; }  /* SMART */
-    .item-2 { top: 40%; left: 24%; }  /* MEMORIA */
-    .item-3 { top: 45%; left: 3%; }   /* LIDIA&POGGIO */
-    .item-4 { top: 63%; left: 15%; }  /* AGLY GIRL */
+    /* Позиции карточек */
+    .item-1 { top: 15%; left: 14%; }  /* SMART */
+    .item-2 { top: 38%; left: 24%; }  /* MEMORIA */
+    .item-3 { top: 43%; left: 3%; }   /* LIDIA&POGGIO */
+    .item-4 { top: 62%; left: 14%; }  /* AGLY GIRL */
     
-    .item-5 { top: 30%; right: 27%; } /* СЛЁТ */
-    .item-6 { top: 18%; right: 9%; }  /* ПЛАТФОРМА */
-    .item-7 { top: 45%; right: 9%; }  /* SMARTY */
-    .item-8 { top: 63%; right: 21%; } /* LANDING */
-    .item-9 { top: 43%; right: 2%; }  /* SPRITE RIG */
+    .item-5 { top: 28%; right: 26%; } /* СЛЁТ */
+    .item-6 { top: 15%; right: 9%; }  /* ПЛАТФОРМА */
+    .item-7 { top: 43%; right: 10%; } /* SMARTY */
+    .item-8 { top: 62%; right: 20%; } /* LANDING */
+    .item-9 { top: 41%; right: 2%; }  /* SPRITE RIG */
 
-    /* НИЖНИЙ ДОК */
+    /* ==========================================================================
+       НИЖНИЙ ДОК
+       ========================================================================== */
     .dock-wrapper {
       position: absolute;
       bottom: 30px;
@@ -348,6 +326,32 @@
       line-height: 1.6;
       font-size: 0.95rem;
     }
+
+    /* Адаптивность под мобилки */
+    @media (max-width: 900px) {
+      body { overflow-y: auto; }
+      .projects-container {
+        position: relative;
+        margin-top: 150px;
+        margin-bottom: 200px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 20px;
+      }
+      .project-item {
+        position: relative;
+        top: auto !important; left: auto !important; right: auto !important;
+        transform: none !important;
+      }
+      .mascot-container {
+        position: fixed;
+        bottom: 0;
+        opacity: 0.4;
+        width: 150%;
+        height: 60vh;
+      }
+    }
   </style>
 </head>
 <body>
@@ -364,7 +368,7 @@
     <div class="experience-tag">5 лет опыта</div>
   </div>
 
-  <!-- 9 Проектов по координатам из макета -->
+  <!-- 9 Проектов -->
   <div class="projects-container">
     <div class="project-item item-1" onclick="openPopup('smart')">
       <div class="image-shape" style="background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300&q=80');"></div>
@@ -404,15 +408,17 @@
     </div>
   </div>
 
-  <!-- Крупный маскот на весь экран со следящими глазами -->
-  <div class="mascot-fullscreen">
-    <!-- Слой глаз под телом -->
-    <div class="eyes-layer">
-      <div class="eye-socket socket-left"><div id="eye-l" class="eye-graphic"></div></div>
-      <div class="eye-socket socket-right"><div id="eye-r" class="eye-graphic"></div></div>
+  <!-- МАСКОТ С ДВУМЯ ИДЕНТИЧНЫМИ СЛОЯМИ -->
+  <div class="mascot-container">
+    <div class="mascot-wrapper">
+      
+      <!-- Нижний слой (глаза двигаются) -->
+      <div id="eyes-underlay" class="eyes-underlay"></div>
+      
+      <!-- Верхний слой (тело с прозрачными дырками) -->
+      <div class="cat-body-overlay"></div>
+      
     </div>
-    <!-- Тело кота поверх глаз -->
-    <div class="mascot-body-img"></div>
   </div>
 
   <!-- Нижний док -->
@@ -456,41 +462,20 @@
       cv: { title: "О себе", text: "Наташа — графический и бренд-дизайнер. 5 лет опыта." }
     };
 
-    const eyeL = document.getElementById('eye-l');
-    const eyeR = document.getElementById('eye-r');
-    const maxOffset = 10;
+    const eyesUnderlay = document.getElementById('eyes-underlay');
+    const maxOffset = 18; // Амплитуда движения зрачков внутри глазниц
 
     document.addEventListener('mousemove', (e) => {
       const { innerWidth, innerHeight } = window;
+      
+      // Вычисляем отклонение курсора от центра (от -0.5 до +0.5)
       const x = (e.clientX / innerWidth) - 0.5;
       const y = (e.clientY / innerHeight) - 0.5;
+
+      // Сдвигаем весь нижний слой с глазами
       const dx = x * maxOffset * 2;
       const dy = y * maxOffset * 1.5;
 
-      if (eyeL && eyeR) {
-        eyeL.style.transform = `translate(${dx}px, ${dy}px)`;
-        eyeR.style.transform = `translate(${dx}px, ${dy}px)`;
-      }
-    });
-
-    function openPopup(key) {
-      const p = DATA[key];
-      if (!p) return;
-      document.getElementById('modal-title').innerText = p.title;
-      document.getElementById('modal-desc').innerText = p.text;
-      document.getElementById('popup-overlay').classList.add('active');
-    }
-
-    function closePopup() {
-      document.getElementById('popup-overlay').classList.add('active');
-      document.getElementById('popup-overlay').classList.remove('active');
-    }
-    function closePopupOnBg(e) {
-      if (e.target.id === 'popup-overlay') closePopup();
-    }
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closePopup();
-    });
-  </script>
-</body>
-</html>
+      if (eyesUnderlay) {
+        eyesUnderlay.style.transform = `translate(${dx}px, ${dy}px)`;
+    
