@@ -14,6 +14,8 @@
       --text-dark: #121214;
       --font-heading: 'Unbounded', sans-serif;
       --font-body: 'Plus Jakarta Sans', sans-serif;
+      /* Добавляем системный шрифт Apple (SF UI Display / SF Pro Display) */
+      --font-projects: 'SF UI Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
     * {
@@ -32,7 +34,7 @@
       position: relative;
     }
 
-    /* Фоновое сияние */
+    /* Фоновые радиальные свечения для объема */
     .glow-overlay {
       position: absolute;
       inset: 0;
@@ -85,46 +87,32 @@
     }
 
     /* ==========================================================================
-       ЦЕНТРАЛЬНЫЙ МАСКОТ (Два идеально совмещенных слоя)
+       МАСКОТ (ЗАЦИКЛЕННОЕ ВИДЕО НА ЗАДНЕМ ПЛАНЕ)
        ========================================================================== */
-    .mascot-container {
+    .mascot-video-container {
       position: absolute;
-      bottom: -20px;
+      bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      /* Соотношение сторон 2398x1308 = 1.833 */
       width: 100%;
-      max-width: 1100px;
-      aspect-ratio: 2398 / 1308;
+      max-width: 950px;
+      height: 90vh;
       z-index: 2;
       pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
     }
 
-    /* Нижний слой: глаза (eye.png), которые двигаются */
-    .eyes-underlay {
-      position: absolute;
-      inset: 0;
-      background-image: url('eye.png');
-      background-size: contain;
-      background-position: center bottom;
-      background-repeat: no-repeat;
-      z-index: 2;
-      transition: transform 0.08s ease-out;
-    }
-
-    /* Верхний слой: тело кота (cat_body.png) с прозрачными дырками */
-    .cat-body-overlay {
-      position: absolute;
-      inset: 0;
-      background-image: url('cat_body.png');
-      background-size: contain;
-      background-position: center bottom;
-      background-repeat: no-repeat;
-      z-index: 3;
+    .bg-video-mascot {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center bottom;
     }
 
     /* ==========================================================================
-       КАРТОЧКИ ПРОЕКТОВ (Координаты под новый масштаб кота)
+       КАРТОЧКИ ПРОЕКТОВ (Настройки шрифта: SF UI Display, 14px, medium)
        ========================================================================== */
     .projects-container {
       position: absolute;
@@ -139,7 +127,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       cursor: pointer;
       transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -166,17 +154,17 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
+    /* Обновленная типографика проектов */
     .project-label {
-      font-family: var(--font-heading);
-      font-size: 0.65rem;
-      font-weight: 900;
+      font-family: var(--font-projects);
+      font-size: 14px; /* Ровно 14 пикселей */
+      font-weight: 500; /* Начертание Medium */
       color: var(--text-dark);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
       text-align: center;
+      letter-spacing: -0.2px;
     }
 
-    /* Позиции карточек */
+    /* Координаты 8 проектов (Sprite rig удален, положение остальных выровнено) */
     .item-1 { top: 15%; left: 14%; }  /* SMART */
     .item-2 { top: 38%; left: 24%; }  /* MEMORIA */
     .item-3 { top: 43%; left: 3%; }   /* LIDIA&POGGIO */
@@ -186,7 +174,6 @@
     .item-6 { top: 15%; right: 9%; }  /* ПЛАТФОРМА */
     .item-7 { top: 43%; right: 10%; } /* SMARTY */
     .item-8 { top: 62%; right: 20%; } /* LANDING */
-    .item-9 { top: 41%; right: 2%; }  /* SPRITE RIG */
 
     /* ==========================================================================
        НИЖНИЙ ДОК
@@ -327,7 +314,7 @@
       font-size: 0.95rem;
     }
 
-    /* Адаптивность под мобилки */
+    /* Мобильная версия */
     @media (max-width: 900px) {
       body { overflow-y: auto; }
       .projects-container {
@@ -344,7 +331,7 @@
         top: auto !important; left: auto !important; right: auto !important;
         transform: none !important;
       }
-      .mascot-container {
+      .mascot-video-container {
         position: fixed;
         bottom: 0;
         opacity: 0.4;
@@ -368,57 +355,64 @@
     <div class="experience-tag">5 лет опыта</div>
   </div>
 
-  <!-- 9 Проектов -->
+  <!-- Карточки проектов (Ровно 8 проектов) -->
   <div class="projects-container">
+    
+    <!-- 1. SMART (Картинка) -->
     <div class="project-item item-1" onclick="openPopup('smart')">
       <div class="image-shape" style="background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300&q=80');"></div>
       <div class="project-label">Smart</div>
     </div>
+
+    <!-- 2. MEMORIA (Картинка) -->
     <div class="project-item item-2" onclick="openPopup('memoria')">
       <div class="image-shape" style="background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=300&q=80');"></div>
       <div class="project-label">Memoria</div>
     </div>
+
+    <!-- 3. LIDIA&POGGIO (Картинка) -->
     <div class="project-item item-3" onclick="openPopup('lidia')">
       <div class="image-shape" style="background-image: url('https://images.unsplash.com/photo-1563089145-599997674d42?w=300&q=80');"></div>
       <div class="project-label">Lidia&Poggio</div>
     </div>
+
+    <!-- 4. AGLY GIRL (Папка) -->
     <div class="project-item item-4" onclick="openPopup('agly')">
       <div class="folder-shape"></div>
       <div class="project-label">Agly Girl</div>
     </div>
+
+    <!-- 5. СЛЁТ (Папка) -->
     <div class="project-item item-5" onclick="openPopup('slet')">
       <div class="folder-shape"></div>
       <div class="project-label">Слёт</div>
     </div>
+
+    <!-- 6. ПЛАТФОРМА (Папка) -->
     <div class="project-item item-6" onclick="openPopup('platform')">
       <div class="folder-shape"></div>
       <div class="project-label">Платформа</div>
     </div>
+
+    <!-- 7. SMARTY (Картинка) -->
     <div class="project-item item-7" onclick="openPopup('smarty')">
       <div class="image-shape" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80');"></div>
       <div class="project-label">Smarty</div>
     </div>
+
+    <!-- 8. LANDING (Папка) -->
     <div class="project-item item-8" onclick="openPopup('landing')">
       <div class="folder-shape"></div>
       <div class="project-label">Landing</div>
     </div>
-    <div class="project-item item-9" onclick="openPopup('sprite')">
-      <div class="image-shape" style="background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=300&q=80');"></div>
-      <div class="project-label">Sprite Rig</div>
-    </div>
+
   </div>
 
-  <!-- МАСКОТ С ДВУМЯ ИДЕНТИЧНЫМИ СЛОЯМИ -->
-  <div class="mascot-container">
-    <div class="mascot-wrapper">
-      
-      <!-- Нижний слой (глаза двигаются) -->
-      <div id="eyes-underlay" class="eyes-underlay"></div>
-      
-      <!-- Верхний слой (тело с прозрачными дырками) -->
-      <div class="cat-body-overlay"></div>
-      
-    </div>
+  <!-- МАСКОТ В ВИДЕ ЖИВОГО ВИДЕО НА ФОНЕ -->
+  <div class="mascot-video-container">
+    <video class="bg-video-mascot" autoplay loop muted playsinline>
+      <source src="intro.mp4" type="video/mp4">
+    </video>
   </div>
 
   <!-- Нижний док -->
@@ -433,7 +427,7 @@
       <a href="#" class="icon-circle">⚪</a>
       <div class="dock-divider"></div>
       <a href="https://t.me/your_telegram" target="_blank" class="icon-circle icon-tg">✈️</a>
-      <a href="/cdn-cgi/l/email-protection#eb92849e99b48e868a8287ab8c868a8287c5888486" class="icon-circle icon-email">✉️</a>
+      <a href="mailto:your_email@gmail.com" class="icon-circle icon-email">✉️</a>
     </div>
   </div>
 
@@ -448,55 +442,35 @@
     </div>
   </div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     const DATA = {
-      smart: { title: "Smart Project", text: "Описание креативного кейса Smart." },
-      memoria: { title: "Memoria", text: "Арт-бук и концепт-дизайн." },
+      smart: { title: "Smart Project", text: "Описание креативного кейса Smart. Разработка фирменного стиля и мерча." },
+      memoria: { title: "Memoria", text: "Арт-бук и концепт-дизайн визуального стиля." },
       lidia: { title: "Lidia & Poggio", text: "Оформление премиальной упаковки." },
-      agly: { title: "Agly Girl", text: "Графические материалы." },
-      slet: { title: "Слёт", text: "Айдентика фестиваля." },
-      platform: { title: "Платформа", text: "Интерфейсы и брендинг." },
-      smarty: { title: "Smarty App", text: "Мобильное приложение." },
-      landing: { title: "Landing Page", text: "Промо-страница." },
-      sprite: { title: "Sprite Rigging", text: "Анимация персонажа." },
-      cv: { title: "О себе", text: "Наташа — графический и бренд-дизайнер. 5 лет опыта." }
+      agly: { title: "Agly Girl", text: "Разработка графических материалов для бренда." },
+      slet: { title: "Слёт", text: "Айдентика фестиваля и дизайн мерча." },
+      platform: { title: "Платформа", text: "Интерфейсы и брендинг диджитал-продукта." },
+      smarty: { title: "Smarty App", text: "Интерфейс мобильного приложения." },
+      landing: { title: "Landing Page", text: "Проектирование и верстка промо-страницы." },
+      cv: { title: "О себе", text: "Наташа — графический и бренд-дизайнер. 5 лет опыта разработки ярких визуальных концепций." }
     };
 
-    const eyesUnderlay = document.getElementById('eyes-underlay');
-    const maxOffset = 18; // Амплитуда движения зрачков внутри глазниц
-
-    document.addEventListener('mousemove', (e) => {
-      const { innerWidth, innerHeight } = window;
-      
-      // Вычисляем отклонение курсора от центра (от -0.5 до +0.5)
-      const x = (e.clientX / innerWidth) - 0.5;
-      const y = (e.clientY / innerHeight) - 0.5;
-
-      // Сдвигаем весь нижний слой с глазами
-      const dx = x * maxOffset * 2;
-      const dy = y * maxOffset * 1.5;
-
-      if (eyesUnderlay) {
-        eyesUnderlay.style.transform = `translate(${dx}px, ${dy}px)`;
-      }
-    });
-
     function openPopup(key) {
-      const p = DATA[key];
-      if (!p) return;
-      document.getElementById('modal-title').innerText = p.title;
-      document.getElementById('modal-desc').innerText = p.text;
+      const project = DATA[key];
+      if (!project) return;
+      document.getElementById('modal-title').innerText = project.title;
+      document.getElementById('modal-desc').innerText = project.text;
       document.getElementById('popup-overlay').classList.add('active');
     }
 
     function closePopup() {
       document.getElementById('popup-overlay').classList.remove('active');
     }
-    
+
     function closePopupOnBg(e) {
       if (e.target.id === 'popup-overlay') closePopup();
     }
-    
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closePopup();
     });
