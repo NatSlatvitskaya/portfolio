@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nat Slatvickaya — Portfolio</title>
+  <title>Natasha — Graphic & Brand Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #20E298;        /* Зеленый цвет по умолчанию */
-      --cat-color: #121214;       /* Темный цвет папок и текста */
-      --accent-neon: #20E298;
+      /* Зеленая неоновая цветовая гамма из вашего нового макета */
+      --green-bg: #20E298; 
+      --folder-color: #121214; /* Приглушенные контрастные темные папки */
+      --text-white: #FFFFFF;
+      --text-dark: #121214;
+      --font-heading: 'Unbounded', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      
       --card-bg: rgba(18, 18, 20, 0.95);
       --card-border: rgba(255, 255, 255, 0.08);
       --text-light: #F3F4F6;
       --text-muted: #9CA3AF;
-      --font-heading: 'Unbounded', sans-serif;
-      --font-body: 'Plus Jakarta Sans', sans-serif;
     }
 
     * {
@@ -27,292 +30,306 @@
     }
 
     body {
-      /* Загружаем реальный кадр bg.png как фоновое изображение на весь экран */
-      background-image: url('bg.png');
-      background-size: cover;
-      background-position: center bottom;
-      background-repeat: no-repeat;
-      background-color: var(--bg-color);
+      background-color: var(--green-bg);
       font-family: var(--font-body);
-      color: var(--cat-color);
+      color: var(--text-dark);
       min-height: 100vh;
-      overflow: hidden;
+      overflow: hidden; /* Всё на одном экране */
       position: relative;
-      transition: background-image 0.5s ease, background-color 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px 20px;
+    }
+
+    /* Фоновые радиальные свечения для красивого объема */
+    .glow-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 75% 50%, rgba(255, 255, 255, 0.35) 0%, transparent 60%),
+                  radial-gradient(circle at 25% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
     }
 
     /* ==========================================================================
-       FULLSCREEN VIDEO PRELOADER (Интро)
+       ВЕРХНЯЯ ШАПКА
        ========================================================================== */
-    #video-intro-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 9999;
-      background-color: #000;
+    .header-bar {
+      width: 100%;
+      max-width: 1200px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+      justify-content: space-between;
+      align-items: flex-start;
+      z-index: 10;
     }
 
-    #video-intro-container.hidden {
-      opacity: 0;
-      visibility: hidden;
+    .nav-link {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--text-dark);
+      transition: opacity 0.2s;
+    }
+    .nav-link:hover { opacity: 0.8; }
+
+    .bio-center {
+      text-align: center;
+      max-width: 450px;
+    }
+
+    .bio-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .bio-subtitle {
+      font-size: 0.85rem;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    .experience-tag {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       МАСКОТ (Котик-кролик со следящими под-глазами)
+       ========================================================================== */
+    .mascot-container {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(650px, 95vw);
+      height: 75vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 2;
       pointer-events: none;
     }
 
-    #intro-video {
+    .mascot-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ВАЖНО: Картинка котика с дырками накладывается НАД глазами */
+    .mascot-image {
+      position: absolute;
+      inset: 0;
+      background-image: url('cat_body.png'); 
+      background-size: contain;
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      z-index: 3; /* Слой выше зрачков */
+    }
+
+    /* Слой для глаз, находящийся ПОД телом котика */
+    .eyes-underlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2; /* Слой ниже котика */
+    }
+
+    /* Область каждого глаза (настраивается под точные размеры и координаты дырок) */
+    .eye-socket {
+      position: absolute;
+      width: 80px;  /* Ширина глазного яблока */
+      height: 60px; /* Высота глазного яблока */
+      overflow: hidden; /* Глаз скроется, если уйдет за границу */
+    }
+
+    /* Точная подгонка координат под дырки в файле cat_body.png */
+    .socket-left {
+      left: 36.8%;
+      top: 40.5%;
+    }
+
+    .socket-right {
+      right: 36.8%;
+      top: 40.5%;
+    }
+
+    /* Картинка самого глаза, которая двигается внутри сокета */
+    .eye-graphic {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: url('eye.png'); /* Картинка глаза целиком */
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: transform 0.08s ease-out;
+    }
+
+    /* ==========================================================================
+       КАРТОЧКИ КЕЙСОВ
+       ========================================================================== */
+    .projects-container {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .project-item {
+      position: absolute;
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .project-item:hover {
+      transform: scale(1.1) translateY(-4px);
+    }
+
+    .folder-shape {
+      width: 100px;
+      height: 70px;
+      background-color: var(--folder-color);
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(18, 18, 20, 0.2);
+    }
+
+    .image-shape {
+      width: 100px;
+      height: 70px;
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 10px 25px rgba(18, 18, 20, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .project-label {
+      font-family: var(--font-heading);
+      font-size: 0.65rem;
+      font-weight: 900;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    /* Точки позиционирования проектов вокруг кота */
+    .item-1 { top: 15%; left: 18%; }  /* SMART (картинка) */
+    .item-2 { top: 38%; left: 25%; }  /* MEMORIA (картинка) */
+    .item-3 { top: 43%; left: 2%; }   /* LIDIA&POGGIO (картинка) */
+    .item-4 { top: 60%; left: 16%; }  /* AGLY GIRL (папка) */
+    
+    .item-5 { top: 28%; right: 28%; } /* СЛЁТ (папка) */
+    .item-6 { top: 15%; right: 10%; } /* ПЛАТФОРМА (папка) */
+    .item-7 { top: 43%; right: 10%; } /* SMARTY (картинка) */
+    .item-8 { top: 60%; right: 23%; } /* LANDING (папка) */
+    .item-9 { top: 41%; right: 3%; }  /* SPRITE RIG (картинка) */
+
+    /* ==========================================================================
+       НИЖНИЙ СТЕКЛЯННЫЙ ДОК
+       ========================================================================== */
+    .dock-wrapper {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .cv-badge {
+      pointer-events: auto;
+      background-color: var(--folder-color);
+      color: var(--green-bg);
+      padding: 6px 20px;
+      border-radius: 20px;
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+    .cv-badge:hover { transform: scale(1.05); }
+
+    .glass-dock {
+      pointer-events: auto;
+      background: rgba(18, 18, 20, 0.15);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(18, 18, 20, 0.2);
+      border-radius: 40px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .dock-divider {
+      width: 1px;
+      height: 30px;
+      background-color: rgba(18, 18, 20, 0.2);
+    }
+
+    .avatar-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--text-dark);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .avatar-btn img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    .skip-btn {
-      position: absolute;
-      bottom: 30px;
-      right: 30px;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-size: 14px;
-      cursor: pointer;
-      font-family: var(--font-heading);
-      transition: all 0.3s ease;
-      z-index: 10000;
-    }
-
-    .skip-btn:hover {
-      background: var(--bg-color);
-      color: #000;
-      border-color: var(--bg-color);
-    }
-
-    /* ==========================================================================
-       ВЕРХНЯЯ ПАНЕЛЬ И НАСТРОЙКИ
-       ========================================================================== */
-    .top-bar {
-      position: absolute;
-      top: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 1200px;
-      padding: 0 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .brand {
-      font-family: var(--font-heading);
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--cat-color);
-    }
-
-    /* Выбор цвета фона (позволяет менять картинку на bg_purple.png или bg_grey.png) */
-    .theme-picker {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(18, 18, 20, 0.15);
-      border: 1px solid rgba(18, 18, 20, 0.2);
-      padding: 6px 12px;
-      border-radius: 20px;
-      backdrop-filter: blur(8px);
-    }
-
-    .theme-picker span {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--cat-color);
-    }
-
-    .color-dot {
-      width: 18px;
-      height: 18px;
+    .icon-circle {
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: transform 0.2s;
-    }
-
-    .color-dot:hover { transform: scale(1.25); }
-    .color-dot.active { border-color: var(--cat-color); }
-    
-    .dot-green { background: #20E298; }
-    .dot-purple { background: #925CFF; }
-    .dot-grey { background: #A3A3A3; }
-
-    /* ==========================================================================
-       СЛЕЖАЩИЕ ГЛАЗА (Накладываются поверх фоновой картинки bg.png)
-       ========================================================================== */
-    .eyes-container {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 1200px;
-      /* Соотношение сторон должно соответствовать оригинальному кадру */
-      aspect-ratio: 1200 / 600;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .interactive-eyes {
-      position: absolute;
-      /* Подстраиваем координаты точно под отверстия для глаз на фоновом рисунке */
-      bottom: 2%; 
-      left: 0;
-      width: 100%;
-      height: auto;
-    }
-
-    /* ==========================================================================
-       ПАПКИ КЕЙСОВ
-       ========================================================================== */
-    .folders-container {
-      position: absolute;
-      inset: 0;
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    .folder-card {
-      position: absolute;
-      pointer-events: auto;
-      width: 120px;
-      height: 100px;
-      cursor: pointer;
+      background: var(--text-dark);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .folder-card:hover {
-      transform: scale(1.15) translateY(-5px);
-    }
-
-    .folder-icon {
-      position: relative;
-      width: 70px;
-      height: 50px;
-      background-color: var(--cat-color);
-      border-radius: 0px 8px 8px 8px;
-      box-shadow: 0 8px 15px rgba(0,0,0,0.15);
-      transition: background-color 0.3s;
-    }
-
-    .folder-icon::before {
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: 0;
-      width: 30px;
-      height: 10px;
-      background-color: var(--cat-color);
-      border-radius: 5px 5px 0 0;
-      transition: background-color 0.3s;
-    }
-
-    .folder-icon::after {
-      content: '';
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      width: 60px;
-      height: 40px;
-      background-color: #fff;
-      border-radius: 4px;
-      transform: translateY(0px);
-      transition: transform 0.3s ease;
-      z-index: -1;
-    }
-
-    .folder-card:hover .folder-icon::after {
-      transform: translateY(-8px);
-    }
-
-    .folder-title {
-      margin-top: 10px;
-      font-family: var(--font-heading);
-      font-size: 0.65rem;
-      font-weight: 800;
-      color: var(--cat-color);
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      max-width: 100px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* Расположение папок в свободных зонах над котом */
-    .folder-1 { top: 22%; left: 15%; }
-    .folder-2 { top: 28%; left: 32%; }
-    .folder-3 { top: 20%; left: 50%; transform: translateX(-50%); }
-    .folder-4 { top: 20%; right: 15%; }
-    .folder-5 { top: 38%; left: 10%; }
-    .folder-6 { top: 40%; right: 10%; }
-    .folder-7 { top: 30%; right: 30%; }
-
-    /* ==========================================================================
-       НИЖНИЙ ДОК (Социальные сети и CV)
-       ========================================================================== */
-    .bottom-dock {
-      position: absolute;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--cat-color);
-      padding: 10px 24px;
-      border-radius: 30px;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      z-index: 100;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    .dock-btn {
-      color: var(--bg-color);
+      color: var(--green-bg);
       text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 700;
-      font-family: var(--font-heading);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 20px;
-      transition: background 0.2s, color 0.2s;
+      font-size: 1.2rem;
+      transition: transform 0.2s, background-color 0.2s;
     }
 
-    .dock-btn:hover {
-      background: #fff;
-      color: var(--cat-color);
+    .icon-circle:hover {
+      transform: scale(1.1);
+      background-color: #fff;
+      color: var(--text-dark);
     }
+
+    .icon-tg { background: var(--text-dark); }
+    .icon-email { background: var(--text-dark); }
 
     /* ==========================================================================
-       ВСПЛЫВАЮЩИЕ ОКНА (Попап)
+       ПОПАП КЕЙСОВ
        ========================================================================== */
     .popup-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(15px);
       z-index: 1000;
       display: flex;
       align-items: center;
@@ -320,7 +337,6 @@
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s ease;
-      padding: 20px;
     }
 
     .popup-overlay.active {
@@ -329,20 +345,14 @@
     }
 
     .popup-content {
-      background: #15171C;
-      border: 1px solid var(--card-border);
+      background: #121214;
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 28px;
-      width: min(800px, 95vw);
-      max-height: 85vh;
+      width: min(750px, 95vw);
+      max-height: 80vh;
       overflow-y: auto;
-      padding: 36px;
+      padding: 32px;
       position: relative;
-      transform: scale(0.9);
-      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-
-    .popup-overlay.active .popup-content {
-      transform: scale(1);
     }
 
     .popup-close {
@@ -352,240 +362,222 @@
       background: rgba(255,255,255,0.08);
       border: none;
       color: #fff;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-
-    .popup-close:hover { background: var(--bg-color); color: #000; }
 
     .popup-title {
       font-family: var(--font-heading);
-      font-size: 1.6rem;
-      color: var(--bg-color);
-      margin-bottom: 6px;
+      font-size: 1.5rem;
+      color: var(--green-bg);
+      margin-bottom: 8px;
     }
 
-    .popup-media {
-      width: 100%;
-      border-radius: 16px;
-      margin: 20px 0;
-      overflow: hidden;
-      border: 1px solid var(--card-border);
+    .popup-desc {
+      color: #D6C2CE;
+      line-height: 1.6;
+      font-size: 0.95rem;
     }
 
-    .popup-media img, .popup-media video {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .popup-text { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
-
-    /* Мобильная адаптивность */
-    @media (max-width: 768px) {
-      body {
-        overflow-y: auto;
-        background-attachment: scroll;
-      }
-      .folders-container {
+    /* Мобильная версия сайта */
+    @media (max-width: 900px) {
+      body { overflow-y: auto; }
+      .projects-container {
         position: relative;
-        margin-top: 180px;
-        margin-bottom: 120px;
+        margin-top: 150px;
+        margin-bottom: 200px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
-        padding: 0 20px;
-        pointer-events: auto;
+        padding: 20px;
       }
-      .folder-card {
+      .project-item {
         position: relative;
-        top: auto !important;
-        left: auto !important;
-        right: auto !important;
-        bottom: auto !important;
+        top: auto !important; left: auto !important; right: auto !important;
         transform: none !important;
-        width: 100%;
-        height: auto;
       }
-      .eyes-container {
+      .mascot-container {
         position: fixed;
-        bottom: -50px;
-        width: 140%;
-        opacity: 0.8;
+        bottom: 0;
+        opacity: 0.35;
+        height: 60vh;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Fullscreen Video Preloader -->
-  <div id="video-intro-container">
-    <video id="intro-video" autoplay muted playsinline>
-      <source src="intro.mp4" type="video/mp4">
-    </video>
-    <button class="skip-btn" onclick="closeIntro()">Пропустить интро ➔</button>
+  <div class="glow-overlay"></div>
+
+  <!-- Шапка сайта -->
+  <div class="header-bar">
+    <a href="#" class="nav-link">Все проекты</a>
+    <div class="bio-center">
+      <div class="bio-title">Привет, Я — Наташа</div>
+      <div class="bio-subtitle">{графический и бренд-дизайнер}</div>
+    </div>
+    <div class="experience-tag">5 лет опыта</div>
   </div>
 
-  <!-- Верхняя панель управления -->
-  <div class="top-bar">
-    <div class="brand">NAT SLATVICKAYA <span>/ 2D</span></div>
+  <!-- Проекты (Иконки и Картинки) -->
+  <div class="projects-container">
     
-    <!-- Переключатель фона (Загружает bg_purple.png или bg_grey.png) -->
-    <div class="theme-picker">
-      <span>Фон:</span>
-      <div class="color-dot dot-green active" onclick="changeBg('bg.png', '#20E298', this)"></div>
-      <div class="color-dot dot-purple" onclick="changeBg('bg_purple.png', '#925CFF', this)"></div>
-      <div class="color-dot dot-grey" onclick="changeBg('bg_grey.png', '#A3A3A3', this)"></div>
+    <!-- 1. SMART (Картинка) -->
+    <div class="project-item item-1" onclick="openPopup('smart')">
+      <div class="image-shape" style="background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300&q=80');"></div>
+      <div class="project-label">Smart</div>
+    </div>
+
+    <!-- 2. MEMORIA (Картинка) -->
+    <div class="project-item item-2" onclick="openPopup('memoria')">
+      <div class="image-shape" style="background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=300&q=80');"></div>
+      <div class="project-label">Memoria</div>
+    </div>
+
+    <!-- 3. LIDIA&POGGIO (Картинка) -->
+    <div class="project-item item-3" onclick="openPopup('lidia')">
+      <div class="image-shape" style="background-image: url('https://images.unsplash.com/photo-1563089145-599997674d42?w=300&q=80');"></div>
+      <div class="project-label">Lidia&Poggio</div>
+    </div>
+
+    <!-- 4. AGLY GIRL (Папка) -->
+    <div class="project-item item-4" onclick="openPopup('agly')">
+      <div class="folder-shape"></div>
+      <div class="project-label">Agly Girl</div>
+    </div>
+
+    <!-- 5. СЛЁТ (Папка) -->
+    <div class="project-item item-5" onclick="openPopup('slet')">
+      <div class="folder-shape"></div>
+      <div class="project-label">Слёт</div>
+    </div>
+
+    <!-- 6. ПЛАТФОРМА (Папка) -->
+    <div class="project-item item-6" onclick="openPopup('platform')">
+      <div class="folder-shape"></div>
+      <div class="project-label">Платформа</div>
+    </div>
+
+    <!-- 7. SMARTY (Картинка) -->
+    <div class="project-item item-7" onclick="openPopup('smarty')">
+      <div class="image-shape" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80');"></div>
+      <div class="project-label">Smarty</div>
+    </div>
+
+    <!-- 8. LANDING (Папка) -->
+    <div class="project-item item-8" onclick="openPopup('landing')">
+      <div class="folder-shape"></div>
+      <div class="project-label">Landing</div>
+    </div>
+
+    <!-- 9. SPRITE RIG (Картинка) -->
+    <div class="project-item item-9" onclick="openPopup('sprite')">
+      <div class="image-shape" style="background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=300&q=80');"></div>
+      <div class="project-label">Sprite Rig</div>
+    </div>
+
+  </div>
+
+  <!-- Персонаж Котик-Кролик -->
+  <div class="mascot-container">
+    <div class="mascot-wrapper">
+      
+      <!-- Слой с интерактивными под-глазами (под телом) -->
+      <div class="eyes-underlay">
+        <!-- Левый глаз -->
+        <div class="eye-socket socket-left">
+          <div id="eye-l" class="eye-graphic"></div>
+        </div>
+        <!-- Правый глаз -->
+        <div class="eye-socket socket-right">
+          <div id="eye-r" class="eye-graphic"></div>
+        </div>
+      </div>
+      
+      <!-- Тело котика с вырезанными зрачками (накладывается поверх глаз) -->
+      <div class="mascot-image"></div>
+      
     </div>
   </div>
 
-  <!-- 7 папок кейсов -->
-  <div class="folders-container">
-    <div class="folder-card folder-1" onclick="openPopup('case1')">
-      <div class="folder-icon"></div>
-      <div class="folder-title">Cyber Scratch</div>
-    </div>
-    <div class="folder-card folder-2" onclick="openPopup('case2')">
-      <div class="folder-icon"></div>
-      <div class="folder-title">Cat Rampage</div>
-    </div>
-    <div class="folder-card folder-3" onclick="openPopup('case3')">
-      <div class="folder-icon"></div>
-      <div class="folder-title">Green Burst</div>
-    </div>
-    <div class="folder-card folder-4" onclick="openPopup('case4')">
-      <div class="folder-icon"></div>
-      <div class="folder-title">Game FX</div>
-    </div>
-    <div class="folder-card folder-5" onclick="openPopup('case5')">
-      <div class="folder-icon"></div>
-      <div class="folder-title">Neon Pulse</div>
-    </div>
-    <div class="folder-card folder-6" onclick="openPopup('case6')">
-      <div class="folder-icon"></div>
-      <div class="folder-title">Sprite Rig</div>
-    </div>
-    <div class="folder-card folder-7" onclick="openPopup('case7')">
-      <div class="folder-icon"></div>
-      <div class="folder-title">Showreel 26</div>
+  <!-- Нижний док -->
+  <div class="dock-wrapper">
+    <a href="#" class="cv-badge" onclick="openPopup('cv')">CV</a>
+    <div class="glass-dock">
+      
+      <div class="avatar-btn" onclick="openPopup('cv')">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Avatar">
+      </div>
+      
+      <div class="dock-divider"></div>
+      <a href="#" class="icon-circle">⚫</a>
+      <a href="#" class="icon-circle">⚪</a>
+      <div class="dock-divider"></div>
+      
+      <a href="https://t.me/your_telegram" target="_blank" class="icon-circle icon-tg">✈️</a>
+      <a href="mailto:your_email@gmail.com" class="icon-circle icon-email">✉️</a>
+      
     </div>
   </div>
 
-  <!-- Глаза накладываются поверх фонового рисунка -->
-  <div class="eyes-container">
-    <svg class="interactive-eyes" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Зрачки кота, движущиеся за мышью (настроены точно под отверстия глаз на bg.png) -->
-      <ellipse id="pupil-left" cx="365" cy="480" rx="14" ry="48" fill="#20E298"/>
-      <ellipse id="pupil-right" cx="835" cy="480" rx="14" ry="48" fill="#20E298"/>
-    </svg>
-  </div>
-
-  <!-- Нижний плавающий док -->
-  <div class="bottom-dock">
-    <a href="https://t.me/your_telegram" target="_blank" class="dock-btn">✈️ Telegram</a>
-    <a href="https://behance.net" target="_blank" class="dock-btn">🎨 Behance</a>
-    <a href="https://instagram.com" target="_blank" class="dock-btn">📸 Instagram</a>
-    <a href="javascript:void(0)" onclick="openPopup('cv')" class="dock-btn">📄 CV / About</a>
-  </div>
-
-  <!-- Окно просмотра проектов (Попап) -->
+  <!-- Попап -->
   <div class="popup-overlay" id="popup-overlay" onclick="closePopupOnBg(event)">
     <div class="popup-content">
       <button class="popup-close" onclick="closePopup()">✕</button>
-      <div id="popup-body"></div>
+      <div id="popup-body">
+        <h2 id="modal-title" class="popup-title">Проект</h2>
+        <p id="modal-desc" class="popup-desc">Описание...</p>
+      </div>
     </div>
   </div>
 
   <script>
-    // База данных кейсов
-    const PROJECTS_DATABASE = {
-      case1: { title: "Cyber Scratch", subtitle: "Frame-by-Frame 2D", mediaSrc: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=80", description: "Кадровая классическая 2D-анимация с динамическим таймингом." },
-      case2: { title: "Cat Rampage", subtitle: "Spine 2D Rigging", mediaSrc: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=1200&q=80", description: "Игровой маскот с настроенной костной структурой." },
-      case3: { title: "Green Burst", subtitle: "Commercial Motion", mediaSrc: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=1200&q=80", description: "Рекламный анимационный ролик." },
-      case4: { title: "Game FX", subtitle: "2D VFX", mediaSrc: "https://images.unsplash.com/photo-1563089145-599997674d42?w=1200&q=80", description: "Набор покадровых спецэффектов." },
-      case5: { title: "Neon Pulse", subtitle: "Music Video", mediaSrc: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=1200&q=80", description: "Анимационные перебивки для музыкального клипа." },
-      case6: { title: "Sprite Rig", subtitle: "Character Animation", mediaSrc: "https://images.unsplash.com/photo-1558470598-a5dda9640f68?w=1200&q=80", description: "Проработка физики и мимики." },
-      case7: { title: "Showreel 2026", subtitle: "Main Showreel", mediaSrc: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=1200&q=80", description: "Сборка лучших проектов за год." },
-      cv: { title: "Nat Slatvickaya — CV / About", subtitle: "2D Animator", mediaSrc: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1200&q=80", description: "Привет! Я 2D-аниматор.<br><br><b>Email:</b> n.slatvickaya@gmail.com<br><b>Telegram:</b> @nataly_anim" }
+    const DATA = {
+      smart: { title: "Smart Project", text: "Описание креативного кейса Smart. Разработка фирменного стиля и мерча." },
+      memoria: { title: "Memoria", text: "Арт-бук и концепт-дизайн визуального стиля." },
+      lidia: { title: "Lidia & Poggio", text: "Оформление премиальной линейки упаковки." },
+      agly: { title: "Agly Girl", text: "Разработка графических материалов для бренда." },
+      slet: { title: "Слёт", text: "Айдентика фестиваля и дизайн мерча." },
+      platform: { title: "Платформа", text: "Интерфейсы и брендинг диджитал-продукта." },
+      smarty: { title: "Smarty App", text: "Интерфейс мобильного приложения." },
+      landing: { title: "Landing Page", text: "Проектирование и верстка промо-страницы." },
+      sprite: { title: "Sprite Rigging", text: "Настройка графики и анимации персонажа." },
+      cv: { title: "О себе", text: "Наташа — графический и бренд-дизайнер. 5 лет опыта разработки ярких визуальных концепций." }
     };
 
-    // Смена фона (изменяет фоновую картинку и цвет элементов)
-    function changeBg(bgImage, themeColor, element) {
-      document.body.style.backgroundImage = `url('${bgImage}')`;
-      document.body.style.backgroundColor = themeColor;
-      
-      // Обновляем цвета элементов дока
-      document.querySelectorAll('.dock-btn').forEach(btn => {
-        btn.style.color = themeColor;
-      });
-      
-      // Обновляем цвет зрачков под цвет фона
-      const pupils = [document.getElementById('pupil-left'), document.getElementById('pupil-right')];
-      pupils.forEach(pupil => {
-        if (pupil) pupil.setAttribute('fill', themeColor);
-      });
-
-      document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
-      element.classList.add('active');
-    }
-
-    // Обработка скрытия интро-видео
-    const videoContainer = document.getElementById('video-intro-container');
-    const introVideo = document.getElementById('intro-video');
-
-    function closeIntro() {
-      if (videoContainer) {
-        videoContainer.classList.add('hidden');
-        if (introVideo) introVideo.pause();
-      }
-    }
-
-    if (introVideo) {
-      introVideo.addEventListener('ended', closeIntro);
-      introVideo.addEventListener('error', closeIntro);
-    }
-
-    // Логика слежения глаз кота
-    const pupilLeft = document.getElementById('pupil-left');
-    const pupilRight = document.getElementById('pupil-right');
-    const baseLeftX = 365, baseLeftY = 480;
-    const baseRightX = 835, baseRightY = 480;
-    const maxOffset = 25;
+    // Интерактивное движение глаз внутри сокетов
+    const eyeL = document.getElementById('eye-l');
+    const eyeR = document.getElementById('eye-r');
+    
+    // Амплитуда движения глазного яблока (в пикселях)
+    const maxOffset = 12; 
 
     document.addEventListener('mousemove', (e) => {
       const { innerWidth, innerHeight } = window;
-      const mouseX = (e.clientX / innerWidth) - 0.5;
-      const mouseY = (e.clientY / innerHeight) - 0.5;
+      
+      // Вычисляем отклонение курсора от центра экрана (от -0.5 до 0.5)
+      const x = (e.clientX / innerWidth) - 0.5;
+      const y = (e.clientY / innerHeight) - 0.5;
 
-      if (pupilLeft && pupilRight) {
-        pupilLeft.setAttribute('cx', baseLeftX + mouseX * maxOffset * 2.5);
-        pupilLeft.setAttribute('cy', baseLeftY + mouseY * maxOffset * 1.5);
-        pupilRight.setAttribute('cx', baseRightX + mouseX * maxOffset * 2.5);
-        pupilRight.setAttribute('cy', baseRightY + mouseY * mouseX * maxOffset * 1.5);
+      // Рассчитываем сдвиг для глазного яблока
+      const dx = x * maxOffset * 2.2;
+      const dy = y * maxOffset * 1.5;
+
+      if (eyeL && eyeR) {
+        eyeL.style.transform = `translate(${dx}px, ${dy}px)`;
+        eyeR.style.transform = `translate(${dx}px, ${dy}px)`;
       }
     });
 
-    // Открытие попапов
+    // Модалки
     function openPopup(key) {
-      const data = PROJECTS_DATABASE[key];
-      if (!data) return;
-      document.getElementById('popup-body').innerHTML = `
-        <h2 class="popup-title">${data.title}</h2>
-        <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">${data.subtitle}</div>
-        <div class="popup-media"><img src="${data.mediaSrc}" alt="${data.title}"></div>
-        <div class="popup-text">${data.description}</div>
-      `;
+      const project = DATA[key];
+      if (!project) return;
+      document.getElementById('modal-title').innerText = project.title;
+      document.getElementById('modal-desc').innerText = project.text;
       document.getElementById('popup-overlay').classList.add('active');
-    }
-
-    function closeModal() {
-      document.getElementById('popup-overlay').classList.remove('active');
     }
 
     function closePopup() {
