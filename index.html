@@ -31,7 +31,7 @@
       color: var(--neon-teal);
       width: 100vw;
       height: 100vh;
-      overflow: hidden;
+      overflow: hidden; /* Строго одноэкранный режим без скролла */
       position: relative;
     }
 
@@ -76,9 +76,9 @@
     /* Верхняя панель */
     .top-bar {
       position: absolute;
-      top: 24px;
-      left: 30px;
-      right: 30px;
+      top: 2rem;
+      left: 3rem;
+      right: 3rem;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -87,7 +87,7 @@
 
     .nav-left {
       font-family: var(--font-projects);
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       font-weight: 600;
       color: var(--neon-pink);
       text-decoration: none;
@@ -101,7 +101,7 @@
 
     .bio-title {
       font-family: var(--font-projects);
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 600;
       color: var(--neon-teal);
       margin-bottom: 2px;
@@ -109,7 +109,7 @@
 
     .bio-subtitle {
       font-family: var(--font-projects);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 500;
       color: var(--neon-teal);
       opacity: 0.9;
@@ -117,7 +117,7 @@
 
     .experience-right {
       font-family: var(--font-projects);
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       font-weight: 600;
       color: var(--neon-pink);
     }
@@ -125,9 +125,9 @@
     /* Футер-теги */
     .footer-tags {
       position: absolute;
-      bottom: 20px;
-      left: 30px;
-      right: 30px;
+      bottom: 2rem;
+      left: 3rem;
+      right: 3rem;
       display: flex;
       justify-content: space-between;
       z-index: 10;
@@ -136,7 +136,7 @@
 
     .tag-item {
       font-family: var(--font-projects);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 500;
       color: var(--neon-teal);
     }
@@ -147,8 +147,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: min(380px, 40vw);
-      height: 55vh;
+      width: 26rem;
+      height: 35rem;
       z-index: 3;
       pointer-events: none;
       display: flex;
@@ -163,54 +163,60 @@
     }
 
     /* ==========================================================================
-       8 КАРТОЧЕК ПРОЕКТОВ (Строго по пикселям из Figma: 142px x 154px)
-       Размер фиксирован в px в точности с вашим макетом
+       ТОЧНЫЕ РАЗМЕРЫ ПЛАШЕК В REM (Базовый 16px для 1920px)
+       - Ширина: 8.875rem (142px)
+       - Высота: 9.625rem (154px)
+       - Скругление: 0.5rem (8px)
+       - Превью внутри: 7.875rem (126px) x 6.25rem (100px), отступ сверху 0.5rem (8px)
+       - Ховер: transform: scale(1.5), z-index: 10
        ========================================================================== */
     .projects-container {
       position: absolute;
       inset: 0;
       z-index: 5;
       pointer-events: none;
-      max-width: 1400px;
-      margin: 0 auto;
     }
 
     .project-card {
       position: absolute;
       pointer-events: auto;
       
-      /* Строгие размеры из Figma */
-      width: 142px;
-      height: 154px;
+      /* Базовые размеры из Figma через rem */
+      width: 8.875rem;
+      height: 9.625rem;
+      border-radius: 0.5rem;
       
       background-color: var(--neon-teal);
-      border-radius: 8px;
-      padding: 8px 8px 0 8px; /* Отступ 8px сверху */
+      padding-top: 0.5rem; /* Отступ 8px от верхнего края */
       
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
+      
       box-sizing: border-box;
-      box-shadow: 0 6px 20px rgba(32, 234, 167, 0.2);
+      box-shadow: 0 0.5rem 1.5rem rgba(32, 234, 167, 0.2);
       cursor: none;
-      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      
+      /* Плавный ховер с переходом */
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
       transform-origin: center center;
     }
 
-    /* Ховер: увеличение в 1.5 раза и цвет #F98FC8 */
+    /* Ховер: увеличение в 1.5 раза, розовый цвет, поднятый z-index */
     .project-card:hover {
       background-color: var(--neon-pink);
       transform: scale(1.5);
-      box-shadow: 0 15px 40px rgba(249, 143, 200, 0.4);
-      z-index: 100;
+      box-shadow: 0 1rem 2.5rem rgba(249, 143, 200, 0.4);
+      z-index: 10;
     }
 
-    /* Черная плашка внутри: 126px x 100px */
+    /* Внутренняя черная область (превью) */
     .card-preview {
-      width: 126px;
-      height: 100px;
+      width: 7.875rem; /* 126px */
+      height: 6.25rem;  /* 100px */
       background-color: #121514;
-      border-radius: 8px;
+      border-radius: 0.5rem; /* 8px */
       background-size: cover;
       background-position: center;
       flex-shrink: 0;
@@ -219,11 +225,11 @@
     /* Текст названия (NAME 1 - 8) */
     .card-label {
       font-family: var(--font-projects);
-      font-size: 13px;
+      font-size: 0.8rem;
       font-weight: 700;
       color: var(--text-dark);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.03rem;
       text-align: center;
       width: 100%;
       display: flex;
@@ -232,23 +238,23 @@
       flex-grow: 1;
     }
 
-    /* Позиционирование 8 карточек вокруг кота на точных процентных координатах */
-    .card-1 { top: 41%; left: 8%; }     /* NAME 1 */
-    .card-2 { top: 16%; left: 22%; }    /* NAME 2 */
-    .card-3 { top: 38%; left: 30%; }    /* NAME 3 */
-    .card-4 { top: 61%; left: 22%; }    /* NAME 4 */
+    /* Асимметричное расположение «облаком» вокруг персонажа (в процентах) */
+    .card-1 { top: 38%; left: 10%; }    /* NAME 1 */
+    .card-2 { top: 15%; left: 22%; }    /* NAME 2 */
+    .card-3 { top: 38%; left: 29%; }    /* NAME 3 */
+    .card-4 { top: 62%; left: 22%; }    /* NAME 4 */
 
-    .card-5 { top: 27%; right: 30%; }   /* NAME 5 */
-    .card-6 { top: 61%; right: 30%; }   /* NAME 6 */
+    .card-5 { top: 26%; right: 29%; }   /* NAME 5 */
+    .card-6 { top: 62%; right: 29%; }   /* NAME 6 */
     .card-7 { top: 40%; right: 19%; }   /* NAME 7 */
-    .card-8 { top: 16%; right: 9%; }    /* NAME 8 */
+    .card-8 { top: 15%; right: 10%; }   /* NAME 8 */
 
     /* ==========================================================================
        НИЖНИЙ СТЕКЛЯННЫЙ PILL-ДОК
        ========================================================================== */
     .dock-wrapper {
       position: absolute;
-      bottom: 20px;
+      bottom: 2rem;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
@@ -258,27 +264,27 @@
       backdrop-filter: blur(25px);
       border: 1px solid rgba(32, 234, 167, 0.3);
       border-radius: 50px;
-      padding: 6px 14px;
-      gap: 12px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      padding: 0.5rem 1.25rem;
+      gap: 0.85rem;
+      box-shadow: 0 1rem 2.5rem rgba(0,0,0,0.4);
     }
 
     .pill-cv {
       font-family: var(--font-projects);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--neon-teal);
       background: transparent;
       border: none;
       text-transform: uppercase;
-      padding: 0 4px;
+      padding: 0 0.4rem;
       cursor: none;
     }
     .pill-cv:hover { opacity: 0.8; }
 
     .dock-divider {
       width: 1px;
-      height: 24px;
+      height: 1.75rem;
       background-color: rgba(32, 234, 167, 0.25);
     }
 
@@ -286,22 +292,22 @@
       background: #FFFFFF;
       color: #121514;
       font-family: var(--font-projects);
-      font-size: 0.6rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 8px;
+      padding: 0.15rem 0.5rem;
+      border-radius: 0.5rem;
       position: absolute;
-      top: -22px;
+      top: -1.5rem;
       left: 50%;
       transform: translateX(-50%);
       white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 0.2rem 0.5rem rgba(0,0,0,0.2);
     }
 
     .dock-item {
       position: relative;
-      width: 36px;
-      height: 36px;
+      width: 2.5rem;
+      height: 2.5rem;
       border-radius: 50%;
       background: #121514;
       border: 1px solid rgba(32, 234, 167, 0.4);
@@ -310,7 +316,7 @@
       justify-content: center;
       color: var(--neon-teal);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 1rem;
       transition: transform 0.2s, background-color 0.2s;
       cursor: none;
     }
@@ -347,24 +353,24 @@
     .popup-content {
       background: #15221C;
       border: 1.5px solid var(--neon-teal);
-      border-radius: 24px;
+      border-radius: 1.5rem;
       width: min(700px, 92vw);
       max-height: 80vh;
       overflow-y: auto;
-      padding: 36px;
+      padding: 2.25rem;
       position: relative;
-      box-shadow: 0 0 30px rgba(32, 226, 152, 0.25);
+      box-shadow: 0 0 2rem rgba(32, 226, 152, 0.25);
     }
 
     .popup-close {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 1.25rem;
+      right: 1.25rem;
       background: rgba(32, 234, 167, 0.1);
       border: 1px solid var(--neon-teal);
       color: var(--neon-teal);
-      width: 36px;
-      height: 36px;
+      width: 2.25rem;
+      height: 2.25rem;
       border-radius: 50%;
       cursor: none;
       display: flex;
@@ -379,7 +385,7 @@
       font-family: var(--font-heading);
       font-size: 1.5rem;
       color: var(--neon-teal);
-      margin-bottom: 8px;
+      margin-bottom: 0.5rem;
     }
 
     .popup-desc {
@@ -393,12 +399,12 @@
       body { overflow-y: auto !important; height: auto !important; }
       .projects-container {
         position: relative;
-        margin-top: 120px;
-        margin-bottom: 160px;
+        margin-top: 8rem;
+        margin-bottom: 10rem;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-        padding: 20px;
+        gap: 1.5rem;
+        padding: 1.5rem;
         width: 100% !important;
       }
       .project-card {
@@ -445,7 +451,7 @@
     <div class="experience-right">6 лет опыта</div>
   </div>
 
-  <!-- 8 Карточек проектов (Строго по пикселям из Figma: 142px x 154px) -->
+  <!-- 8 Карточек проектов (Строго в rem на базе 1920px) -->
   <div class="projects-container">
     <div class="project-card card-1" onclick="openPopup('name1')">
       <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300&q=80');"></div>
@@ -509,7 +515,7 @@
     </div>
     <div class="dock-divider"></div>
     <a href="https://t.me/your_telegram" target="_blank" class="dock-item icon-tg" title="Telegram">✈</a>
-    <a href="/cdn-cgi/l/email-protection#6d1402181f3208000c04012d0a000c0401430e0200" class="dock-item icon-mail" title="Email">✉</a>
+    <a href="mailto:your_email@gmail.com" class="dock-item icon-mail" title="Email">✉</a>
   </div>
 
   <!-- Попап -->
@@ -523,7 +529,7 @@
     </div>
   </div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     const cursor = document.getElementById('custom-cursor');
     document.addEventListener('mousemove', (e) => {
       cursor.style.left = e.clientX + 'px';
