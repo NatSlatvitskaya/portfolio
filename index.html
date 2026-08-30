@@ -4,623 +4,355 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Natasha — Graphic & Brand Designer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
+  <!-- Подключаем шрифт (при необходимости замените Inter на ваш шрифт из Figma) -->
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  
   <style>
-    :root {
-      --bg-dark: #121514;
-      --neon-teal: #20EAA7;
-      --neon-pink: #F98FC8;
-      --text-dark: #242424;
-      --font-heading: 'Unbounded', sans-serif;
-      --font-body: 'Plus Jakarta Sans', sans-serif;
-      --font-projects: 'SF UI Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    /* ГЛОБАЛЬНЫЙ ФИКС ДЛЯ АДАПТИВНОСТИ И ОДНОЭКРАННИКА */
+    html {
+      /* Формула динамического rem: на экранах 1920px он равен строго 16px, 
+         на меньших экранах всё пропорционально сжимается */
+      font-size: calc(100vw / 120);
+    }
+    @media (min-width: 1920px) {
+      html { font-size: 16px; }
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      cursor: none !important;
+      font-family: 'Inter', sans-serif;
     }
 
     body {
-      background-color: var(--bg-dark);
-      font-family: var(--font-body);
-      color: var(--neon-teal);
-      width: 100vw;
+      background-color: #050505;
+      color: #fff;
       height: 100vh;
-      overflow: hidden;
+      width: 100vw;
+      overflow: hidden; /* Строгий запрет на скролл */
       position: relative;
     }
 
-    /* Кастомный курсор SVG */
-    .custom-cursor {
-      position: fixed;
+    /* ФОНОВОЕ ВИДЕО И ЭФФЕКТЫ */
+    .bg-video {
+      position: absolute;
       top: 0;
       left: 0;
-      width: 24px;
-      height: 24px;
-      pointer-events: none;
-      z-index: 99999;
-      transform: translate(-50%, -50%);
-      transition: transform 0.05s ease;
-    }
-
-    /* Фоновое видео */
-    .bg-video-container {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .bg-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.65;
+      z-index: -2;
     }
 
-    .video-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(10, 15, 13, 0.4);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    /* Свечение за курсором */
+    /* ИНТЕРАКТИВНОЕ НЕОНОВОЕ СВЕЧЕНИЕ КУРСОРA */
     .cursor-glow {
       position: fixed;
       top: 0;
       left: 0;
-      width: 50vw;
-      height: 50vw;
+      width: 55vw;
+      height: 55vw;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(32, 234, 167, 0.18) 0%, rgba(32, 234, 167, 0.06) 40%, rgba(0, 0, 0, 0) 70%);
+      /* Радиальный градиент: мятно-зеленый цвет плавно рассеивается в прозрачный */
+      background: radial-gradient(circle, rgba(0, 255, 204, 0.16) 0%, rgba(0, 255, 204, 0.05) 45%, rgba(0, 0, 0, 0) 70%);
       border-radius: 50%;
-      pointer-events: none;
-      z-index: 2;
+      pointer-events: none; /* Свечение "прозрачно" для кликов */
+      z-index: -1; /* Строго над видео, но за персонажем и плашками */
       will-change: transform;
-      transition: opacity 0.4s ease;
-      opacity: 0;
+      opacity: 0; /* Изначально скрыто, проявится при движении */
+      transition: opacity 0.5s ease;
     }
 
-    /* Верхняя панель (Margin 20px) */
-    .top-bar {
+    /* ШАПКА САЙТА */
+    header {
       position: absolute;
-      top: 30px;
-      left: 20px;
-      right: 20px;
-      max-width: 1880px;
-      margin: 0 auto;
-      padding: 0 20px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10vh;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
+      padding: 0 4rem;
       z-index: 10;
     }
 
-    .nav-left {
-      font-family: var(--font-projects);
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--neon-pink);
-      text-decoration: none;
-      transition: opacity 0.2s;
+    .btn-nav {
+      background: none;
+      border: 1px solid rgba(0, 255, 204, 0.4);
+      color: #00ffcc;
+      padding: 0.6rem 1.5rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
     }
-    .nav-left:hover { opacity: 0.8; }
+    .btn-nav:hover {
+      background: rgba(0, 255, 204, 0.1);
+      box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+    }
 
-    .bio-center {
+    .site-title {
       text-align: center;
     }
-
-    .bio-title {
-      font-family: var(--font-projects);
+    .site-title h1 {
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+    .site-title span {
+      color: #00ffcc;
       font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--neon-teal);
-      margin-bottom: 2px;
+      display: block;
+      margin-top: 0.2rem;
     }
 
-    .bio-subtitle {
-      font-family: var(--font-projects);
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--neon-teal);
-      opacity: 0.9;
+    /* ГЛАВНЫЙ КОНТЕЙНЕР СЕТКИ */
+    .main-composition {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr); /* 12 колонок из Figma */
+      grid-template-rows: repeat(6, 1fr);    /* 6 рядов из Figma */
+      width: 100vw;
+      height: 75vh;
+      margin-top: 10vh;
+      align-items: center;
+      justify-items: center;
+      position: relative;
     }
 
-    .experience-right {
-      font-family: var(--font-projects);
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--neon-pink);
-    }
-
-    /* Футер-теги (Margin 20px) */
-    .footer-tags {
-      position: absolute;
-      bottom: 25px;
-      left: 20px;
-      right: 20px;
-      max-width: 1880px;
-      margin: 0 auto;
-      padding: 0 20px;
-      display: flex;
-      justify-content: space-between;
-      z-index: 10;
-      pointer-events: none;
-    }
-
-    .tag-item {
-      font-family: var(--font-projects);
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--neon-teal);
-    }
-
-    /* Центральный маскот */
-    .mascot-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: min(420px, 45vw);
-      height: 60vh;
-      z-index: 3;
-      pointer-events: none;
+    /* ЦЕНТРАЛЬНЫЙ ПЕРСОНАЖ */
+    .character-center {
+      grid-column: 6 / 8;
+      grid-row: 2 / 6;
+      width: 100%;
+      height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
+      z-index: 2;
     }
-
-    .mascot-video {
-      width: 100%;
-      height: 100%;
+    .character-center img {
+      max-height: 90%;
       object-fit: contain;
     }
 
-    /* ==========================================================================
-       12-КОЛОНОЧНАЯ СЕТКА ИЗ ФИГМЫ (Margin: 20px, Gutter: 16px)
-       ========================================================================== */
-    .projects-grid {
-      position: absolute;
-      inset: 0;
-      max-width: 1920px;
-      margin: 0 auto;
-      padding-left: 20px;
-      padding-right: 20px;
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 16px; /* Gutter 16px */
-      z-index: 5;
-      pointer-events: none;
-      align-items: center;
-    }
-
+    /* СТИЛИЗАЦИЯ И РАЗМЕРЫ ПЛАШЕК ИЗ FIGMA */
     .project-card {
-      pointer-events: auto;
-      width: 142px;
-      height: 154px;
-      background-color: var(--neon-teal);
-      border-radius: 8px;
-      padding: 8px 8px 0 8px;
+      width: 8.875rem;       /* Строго 142px при 1920px */
+      height: 9.625rem;      /* Строго 154px при 1920px */
+      border-radius: 0.5rem; /* Строго 8px */
+      border: 2px solid #00ffcc;
+      background: rgba(5, 5, 5, 0.6);
+      backdrop-filter: blur(5px);
       display: flex;
       flex-direction: column;
       align-items: center;
-      box-sizing: border-box;
-      box-shadow: 0 6px 20px rgba(32, 234, 167, 0.2);
-      cursor: none;
-      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transform-origin: center center;
+      justify-content: flex-start;
+      cursor: pointer;
+      z-index: 3;
+      align-self: center;
       justify-self: center;
+      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease, border-color 0.3s ease;
     }
 
-    .project-card:hover {
-      background-color: var(--neon-pink);
-      transform: scale(1.5);
-      box-shadow: 0 15px 40px rgba(249, 143, 200, 0.4);
-      z-index: 100;
+    /* ВНУТРЕННЯЯ ЧЕРНАЯ ОБЛАСТЬ ПЛАШКИ */
+    .project-card .preview-box {
+      width: 7.875rem;       /* Строго 126px при 1920px */
+      height: 6.25rem;       /* Строго 100px при 1920px */
+      margin-top: 0.5rem;    /* Строго 8px */
+      border-radius: 0.5rem; /* Строго 8px */
+      background-color: #0b0b0b;
+      overflow: hidden;
     }
-
-    .card-preview {
-      width: 126px;
-      height: 100px;
-      background-color: #121514;
-      border-radius: 8px;
-      background-size: cover;
-      background-position: center;
-      flex-shrink: 0;
-    }
-
-    .card-label {
-      font-family: var(--font-projects);
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-dark);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      text-align: center;
+    .project-card .preview-box img {
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-grow: 1;
+      height: 100%;
+      object-fit: cover;
     }
 
-    /* Точное расположение 8 карточек строго по вашему новому макету-скриншоту:
-       - Левая сторона:
-         * NAME 1: Самый левый край (Колонка 1, центр по вертикали)
-         * NAME 2: Выше и правее (Колонка 2, верх)
-         * NAME 3: Ближе к центру (Колонка 3, центр)
-         * NAME 4: Ниже NAME 2 (Колонка 2, низ)
-       - Правая сторона:
-         * NAME 5: Справа сверху (Колонка 9, верх)
-         * NAME 6: Справа снизу (Колонка 9, низ)
-         * NAME 7: Справа по центру (Колонка 10, центр)
-         * NAME 8: Правый верхний угол (Колонка 12, самый верх)
-    */
-    .card-1 { grid-column: 1 / span 2;  align-self: center; }  /* NAME 1 */
-    .card-2 { grid-column: 2 / span 2;  align-self: start;  }  /* NAME 2 */
-    .card-3 { grid-column: 3 / span 2;  align-self: center; }  /* NAME 3 */
-    .card-4 { grid-column: 2 / span 2;  align-self: end;    }  /* NAME 4 */
-
-    .card-5 { grid-column: 9 / span 2;  align-self: start;  }  /* NAME 5 */
-    .card-6 { grid-column: 9 / span 2;  align-self: end;    }  /* NAME 6 */
-    .card-7 { grid-column: 10 / span 2; align-self: center; }  /* NAME 7 */
-    .card-8 { grid-column: 12 / span 2; align-self: start;  }  /* NAME 8 */
-
-    /* ==========================================================================
-       НИЖНИЙ СТЕКЛЯННЫЙ PILL-ДОК
-       ========================================================================== */
-    .dock-wrapper {
-      position: absolute;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      background: rgba(18, 25, 22, 0.65);
-      backdrop-filter: blur(25px);
-      border: 1px solid rgba(32, 234, 167, 0.3);
-      border-radius: 50px;
-      padding: 8px 16px;
-      gap: 14px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-    }
-
-    .pill-cv {
-      font-family: var(--font-projects);
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--neon-teal);
-      background: transparent;
-      border: none;
+    .project-card .card-name {
+      font-size: 0.8rem;
+      margin-top: auto;
+      margin-bottom: 0.6rem;
       text-transform: uppercase;
-      padding: 0 6px;
-      cursor: none;
-    }
-    .pill-cv:hover { opacity: 0.8; }
-
-    .dock-divider {
-      width: 1px;
-      height: 28px;
-      background-color: rgba(32, 234, 167, 0.25);
+      letter-spacing: 0.05rem;
     }
 
-    .badge-dprofile {
-      background: #FFFFFF;
-      color: #121514;
-      font-family: var(--font-projects);
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 10px;
+    /* ХОВЕР ЭФФЕКТ ДЛЯ ПЛАШЕК (Увеличение в 1.5 раза) */
+    .project-card:hover {
+      transform: scale(1.5);
+      z-index: 50; /* Поднимается над сеткой и персонажем */
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
+    }
+
+    /* КООРДИНАТЫ ДЛЯ КАЖДОЙ ПЛАШКИ ПО НАПРАВЛЯЮЩИМ */
+    #card-1 { grid-column: 1; grid-row: 4; }
+    #card-2 { grid-column: 3; grid-row: 2; }
+    #card-3 { grid-column: 4; grid-row: 3; }
+    #card-4 { grid-column: 3; grid-row: 5; }
+
+    #card-5 { grid-column: 9; grid-row: 2; }
+    #card-6 { grid-column: 9; grid-row: 5; }
+    #card-7 { grid-column: 10; grid-row: 4; } /* NAME 7 */
+    #card-8 { grid-column: 12; grid-row: 2; }
+
+    /* ПОДВАЛ (Панель и Категории) */
+    footer {
       position: absolute;
-      top: -24px;
-      left: 50%;
-      transform: translateX(-50%);
-      white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 15vh;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4rem;
+      z-index: 10;
     }
 
-    .dock-item {
-      position: relative;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #121514;
-      border: 1px solid rgba(32, 234, 167, 0.4);
+    .footer-tags {
+      color: rgba(0, 255, 204, 0.7);
+      font-size: 1rem;
+      display: flex;
+      gap: 2rem;
+    }
+
+    /* ЦЕНТРАЛЬНАЯ DOCK-ПАНЕЛЬ */
+    .dock-panel {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 0.6rem 2rem;
+      border-radius: 3rem;
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: var(--neon-teal);
+      gap: 1.5rem;
+    }
+    .dock-item {
+      color: #fff;
       text-decoration: none;
       font-size: 1rem;
-      transition: transform 0.2s, background-color 0.2s;
-      cursor: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
     }
-
     .dock-item:hover {
-      transform: scale(1.1);
-      background-color: #1a2420;
-      border-color: var(--neon-teal);
-    }
-
-    .icon-tg { color: var(--neon-teal); }
-    .icon-mail { color: var(--neon-teal); }
-
-    /* Попапы */
-    .popup-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(10, 15, 13, 0.85);
-      backdrop-filter: blur(15px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .popup-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .popup-content {
-      background: #15221C;
-      border: 1.5px solid var(--neon-teal);
-      border-radius: 24px;
-      width: min(700px, 92vw);
-      max-height: 80vh;
-      overflow-y: auto;
-      padding: 36px;
-      position: relative;
-      box-shadow: 0 0 30px rgba(32, 226, 152, 0.25);
-    }
-
-    .popup-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(32, 234, 167, 0.1);
-      border: 1px solid var(--neon-teal);
-      color: var(--neon-teal);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      cursor: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      transition: background 0.2s;
-    }
-    .popup-close:hover { background: var(--neon-teal); color: #121514; }
-
-    .popup-title {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      color: var(--neon-teal);
-      margin-bottom: 8px;
-    }
-
-    .popup-desc {
-      font-family: var(--font-projects);
-      color: #A3C1B4;
-      line-height: 1.6;
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: 900px) {
-      body { overflow-y: auto !important; height: auto !important; }
-      .projects-grid {
-        position: relative;
-        margin-top: 140px;
-        margin-bottom: 180px;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-        padding: 20px;
-        width: 100% !important;
-      }
-      .project-card {
-        width: 100% !important;
-        height: auto !important;
-      }
-      .mascot-container {
-        position: fixed;
-        bottom: 0;
-        opacity: 0.3;
-        width: 100%;
-        height: 40vh;
-      }
+      transform: scale(1.2);
+      color: #00ffcc;
     }
   </style>
 </head>
 <body>
 
-  <!-- Кастомный курсор SVG -->
-  <svg class="custom-cursor" id="custom-cursor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 3L10.5 21L13.5 13.5L21 10.5L3 3Z" fill="#20EAA7" stroke="#121514" stroke-width="1.5" stroke-linejoin="round"/>
-  </svg>
+  <!-- Фон-видео -->
+  <video class="bg-video" autoplay loop muted playsinline>
+    <source src="./video/retro-bg.mp4" type="video/mp4"> <!-- Укажите ваш путь к видео -->
+  </video>
 
-  <!-- Фоновое видео -->
-  <div class="bg-video-container">
-    <video class="bg-video" autoplay loop muted playsinline>
-      <source src="bg.mp4" type="video/mp4">
-    </video>
-    <div class="video-overlay"></div>
-  </div>
+  <!-- Интерактивное свечение -->
+  <div class="cursor-glow"></div>
 
-  <!-- Мягкое неоновое свечение за курсором -->
-  <div class="cursor-glow" id="cursor-glow"></div>
+  <!-- Шапка -->
+  <header>
+    <button class="btn-nav">Все проекты</button>
+    <div class="site-title">
+      <h1>Привет, Я — Наташа</h1>
+      <span>{графический и бренд-дизайнер}</span>
+    </div>
+    <button class="btn-nav">6 лет опыта</button>
+  </header>
 
-  <!-- Верхняя панель (выравнивание по сетке) -->
-  <div class="top-bar">
-    <a href="#" class="nav-left" onclick="openPopup('all')">Все проекты</a>
-    <div class="bio-center">
-      <div class="bio-title">Привет, Я — Наташа</div>
-      <div class="bio-subtitle">{графический и бренд-дизайнер}</div>
+  <!-- Главная композиция по сетке Grid -->
+  <main class="main-composition">
+    
+    <!-- Левая группа плашек -->
+    <div class="project-card" id="card-1">
+      <div class="preview-box"></div>
+      <div class="card-name">NAME 1</div>
     </div>
-    <div class="experience-right">6 лет опыта</div>
-  </div>
+    <div class="project-card" id="card-2">
+      <div class="preview-box"></div>
+      <div class="card-name">NAME 2</div>
+    </div>
+    <div class="project-card" id="card-3">
+      <div class="preview-box"></div>
+      <div class="card-name">NAME 3</div>
+    </div>
+    <div class="project-card" id="card-4">
+      <div class="preview-box"></div>
+      <div class="card-name">NAME 4</div>
+    </div>
 
-  <!-- 12-колоночная сетка проектов (Margin: 20px, Gutter: 16px) -->
-  <div class="projects-grid">
-    <div class="project-card card-1" onclick="openPopup('name1')">
-      <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300&q=80');"></div>
-      <div class="card-label">NAME 1</div>
+    <!-- Центральный персонаж -->
+    <div class="character-center">
+      <img src="./images/character.png" alt="Персонаж"> <!-- Укажите ваш путь к картинке персонажа -->
     </div>
-    <div class="project-card card-2" onclick="openPopup('name2')">
-      <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=300&q=80');"></div>
-      <div class="card-label">NAME 2</div>
-    </div>
-    <div class="project-card card-3" onclick="openPopup('name3')">
-      <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1563089145-599997674d42?w=300&q=80');"></div>
-      <div class="card-label">NAME 3</div>
-    </div>
-    <div class="project-card card-4" onclick="openPopup('name4')">
-      <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80');"></div>
-      <div class="card-label">NAME 4</div>
-    </div>
-    <div class="project-card card-5" onclick="openPopup('name5')">
-      <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=300&q=80');"></div>
-      <div class="card-label">NAME 5</div>
-    </div>
-    <div class="project-card card-6" onclick="openPopup('name6')">
-      <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1558470598-a5dda9640f68?w=300&q=80');"></div>
-      <div class="card-label">NAME 6</div>
-    </div>
-    <div class="project-card card-7" onclick="openPopup('name7')">
-      <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=300&q=80');"></div>
-      <div class="card-label">NAME 7</div>
-    </div>
-    <div class="project-card card-8" onclick="openPopup('name8')">
-      <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80');"></div>
-      <div class="card-label">NAME 8</div>
-    </div>
-  </div>
 
-  <!-- Центральный маскот -->
-  <div class="mascot-container">
-    <video class="mascot-video" autoplay loop muted playsinline>
-      <source src="mascot.mp4" type="video/mp4">
-    </video>
-  </div>
-
-  <!-- Футер теги (выравнивание по сетке) -->
-  <div class="footer-tags">
-    <div class="tag-item">{брендинг}</div>
-    <div class="tag-item">{вэб-дизайн}</div>
-    <div class="tag-item">{коммуникация}</div>
-    <div class="tag-item">{иллюстрация}</div>
-  </div>
-
-  <!-- Нижний док -->
-  <div class="dock-wrapper">
-    <button class="pill-cv" onclick="openPopup('cv')">CV</button>
-    <div class="dock-divider"></div>
-    <div class="dock-item" onclick="openPopup('dprofile')">
-      <div class="badge-dprofile">Dprofile</div>
-      <span>⚡</span>
+    <!-- Правая группа плашек -->
+    <div class="project-card" id="card-5">
+      <div class="preview-box"></div>
+      <div class="card-name">NAME 5</div>
     </div>
-    <div class="dock-item" onclick="openPopup('item2')">
-      <span>✦</span>
+    <div class="project-card" id="card-6">
+      <div class="preview-box"></div>
+      <div class="card-name">NAME 6</div>
     </div>
-    <div class="dock-divider"></div>
-    <a href="https://t.me/your_telegram" target="_blank" class="dock-item icon-tg" title="Telegram">✈</a>
-    <a href="/cdn-cgi/l/email-protection#92ebfde7e0cdf7fff3fbfed2f5fff3fbfebcf1fdff" class="dock-item icon-mail" title="Email">✉</a>
-  </div>
-
-  <!-- Попап -->
-  <div class="popup-overlay" id="popup-overlay" onclick="closePopupOnBg(event)">
-    <div class="popup-content">
-      <button class="popup-close" onclick="closePopup()">✕</button>
-      <div id="popup-body">
-        <h2 id="modal-title" class="popup-title">Проект</h2>
-        <p id="modal-desc" class="popup-desc">Описание кейса...</p>
-      </div>
+    <div class="project-card" id="card-7">
+      <div class="preview-box"></div>
+      <div class="card-name">NAME 7</div>
     </div>
-  </div>
+    <div class="project-card" id="card-8">
+      <div class="preview-box"></div>
+      <div class="card-name">NAME 8</div>
+    </div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    const cursor = document.getElementById('custom-cursor');
-    const glow = document.getElementById('cursor-glow');
+  </main>
 
+  <!-- Подвал -->
+  <footer>
+    <div class="footer-tags">
+      <span>{брендинг}</span>
+      <span>{веб-дизайн}</span>
+    </div>
+
+    <!-- Панель с иконками (Dock) -->
+    <div class="dock-panel">
+      <a class="dock-item">CV</a>
+      <a class="dock-item">Dprofile</a>
+      <a class="dock-item">Telegram</a>
+      <a class="dock-item">Email</a>
+    </div>
+
+    <div class="footer-tags">
+      <span>{коммуникация}</span>
+      <span>{иллюстрация}</span>
+    </div>
+  </footer>
+
+  <!-- Скрипт для плавного движения неонового свечения -->
+  <script>
+    const glow = document.querySelector('.cursor-glow');
+    
+    // Координаты цели (мыши) и текущие координаты свечения
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
     let glowX = mouseX;
     let glowY = mouseY;
 
-    document.addEventListener('mousemove', (e) => {
+    // Включаем видимость свечения только при движении мыши в окне
+    window.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      
-      cursor.style.left = mouseX + 'px';
-      cursor.style.top = mouseY + 'px';
-    });
-
-    function animateGlow() {
-      glowX += (mouseX - glowX) * 0.1;
-      glowY += (mouseY - glowY) * 0.1;
-      
-      glow.style.transform = `translate(calc(${glowX}px - 50%), calc(${glowY}px - 50%))`;
-      
-      requestAnimationFrame(animateGlow);
-    }
-    animateGlow();
-
-    document.addEventListener('mouseenter', () => {
       glow.style.opacity = '1';
     });
+
+    // Плавное затухание, если мышка покинула экран браузера
     document.addEventListener('mouseleave', () => {
       glow.style.opacity = '0';
     });
 
-    const DATA = {
-      name1: { title: "NAME 1", text: "Подробное описание проекта Name 1. Разработка уникального брендинга и айдентики." },
-      name2: { title: "NAME 2", text: "Подробное описание проекта Name 2. Создание современного визуального стиля." },
-      name3: { title: "NAME 3", text: "Подробное описание проекта Name 3. Дизайн интерфейсов и веб-разработка." },
-      name4: { title: "NAME 4", text: "Подробное описание проекта Name 4. Коммуникационный дизайн и иллюстрации." },
-      name5: { title: "NAME 5", text: "NAME 5. Креативная концепция и рекламные материалы." },
-      name6: { title: "NAME 6", text: "NAME 6. Оформление бренда и упаковки." },
-      name7: { title: "NAME 7", text: "NAME 7. Промо-страница и интерактив." },
-      name8: { title: "NAME 8", text: "NAME 8. Комплексный дизайн-проект." },
-      cv: { title: "Наташа — CV", text: "Графический и бренд-дизайнер с 6-летним опытом. Создаю яркие визуальные системы, айдентику и цифровые продукты.<br><br><b>Email:</b> natasha@design.com<br><b>Telegram:</b> @natasha_design" },
-      dprofile: { title: "Profile", text: "Profile on Dprofile with cases and awards." },
-      item2: { title: "Дополнительный блок", text: "Интервью, публикации и статьи о дизайне." },
-      all: { title: "All Projects", text: "Общий архив всех дизайн-проектов за 6 лет." }
-    };
-
-    function openPopup(key) {
-      const p = DATA[key];
-      if (!p) return;
-      document.getElementById('modal-title').innerText = p.title;
-      document.getElementById('modal-desc').innerHTML = p.text;
-      document.getElementById('popup-overlay').classList.add('active');
-    }
-
-    function closePopup() {
-      document.getElementById('popup-overlay').classList.remove('active');
-    }
-
-    function closePopupOnBg(e) {
-      if (e.target.id === 'popup-overlay') closePopup();
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closePopup();
-    });
-  </script>
-</body>
-</html>
+    function animateGlow() {
+      // 0.08 — коэффициент инерции. Чем он меньше, тем плавнее и ленивее "тянется" шлейф
+      glowX += (mouseX - glowX) * 0.08;
+      glowY += (mouseY - glowY) * 0.08;
+      
