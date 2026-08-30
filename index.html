@@ -18,6 +18,17 @@
       --font-projects: 'SF UI Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
+    /* 1. Динамический расчет rem для пропорционального уменьшения на экранах <1920px */
+    html {
+      font-size: calc(100vw / 120); 
+    }
+
+    @media (min-width: 1920px) {
+      html {
+        font-size: 16px;
+      }
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -25,13 +36,14 @@
       cursor: none !important;
     }
 
+    /* 3. Фиксация контейнера и жесткий запрет скролла */
     body {
       background-color: var(--bg-dark);
       font-family: var(--font-body);
       color: var(--neon-teal);
       width: 100vw;
       height: 100vh;
-      overflow: hidden; /* Строго одноэкранный режим без скролла */
+      overflow: hidden;
       position: relative;
     }
 
@@ -40,8 +52,8 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 24px;
-      height: 24px;
+      width: 1.5rem;
+      height: 1.5rem;
       pointer-events: none;
       z-index: 99999;
       transform: translate(-50%, -50%);
@@ -163,31 +175,29 @@
     }
 
     /* ==========================================================================
-       ТОЧНЫЕ РАЗМЕРЫ ПЛАШЕК В REM (Базовый 16px для 1920px)
-       - Ширина: 8.875rem (142px)
-       - Высота: 9.625rem (154px)
-       - Скругление: 0.5rem (8px)
-       - Превью внутри: 7.875rem (126px) x 6.25rem (100px), отступ сверху 0.5rem (8px)
-       - Ховер: transform: scale(1.5), z-index: 10
+       2. ТОЧНЫЕ РАЗМЕРЫ ПЛАШЕК В REM (Строго по ТЗ)
        ========================================================================== */
     .projects-container {
       position: absolute;
       inset: 0;
       z-index: 5;
       pointer-events: none;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
     }
 
     .project-card {
       position: absolute;
       pointer-events: auto;
       
-      /* Базовые размеры из Figma через rem */
-      width: 8.875rem;
-      height: 9.625rem;
-      border-radius: 0.5rem;
+      /* Точные размеры из Figma в rem */
+      width: 8.875rem;       /* 142px при 1920px */
+      height: 9.625rem;      /* 154px при 1920px */
+      border-radius: 0.5rem; /* 8px */
       
       background-color: var(--neon-teal);
-      padding-top: 0.5rem; /* Отступ 8px от верхнего края */
+      padding-top: 0.5rem;   /* Отступ 8px */
       
       display: flex;
       flex-direction: column;
@@ -198,25 +208,18 @@
       box-shadow: 0 0.5rem 1.5rem rgba(32, 234, 167, 0.2);
       cursor: none;
       
-      /* Плавный ховер с переходом */
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      /* Плавный ховер с transform */
+      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease, background-color 0.3s ease;
       transform-origin: center center;
-    }
-
-    /* Ховер: увеличение в 1.5 раза, розовый цвет, поднятый z-index */
-    .project-card:hover {
-      background-color: var(--neon-pink);
-      transform: scale(1.5);
-      box-shadow: 0 1rem 2.5rem rgba(249, 143, 200, 0.4);
-      z-index: 10;
     }
 
     /* Внутренняя черная область (превью) */
     .card-preview {
-      width: 7.875rem; /* 126px */
-      height: 6.25rem;  /* 100px */
-      background-color: #121514;
+      width: 7.875rem;       /* 126px при 1920px */
+      height: 6.25rem;       /* 100px при 1920px */
+      margin-top: 0.0rem;    /* Управляется отступом плашки */
       border-radius: 0.5rem; /* 8px */
+      background-color: #121514;
       background-size: cover;
       background-position: center;
       flex-shrink: 0;
@@ -238,16 +241,24 @@
       flex-grow: 1;
     }
 
-    /* Асимметричное расположение «облаком» вокруг персонажа (в процентах) */
-    .card-1 { top: 38%; left: 10%; }    /* NAME 1 */
-    .card-2 { top: 15%; left: 22%; }    /* NAME 2 */
-    .card-3 { top: 38%; left: 29%; }    /* NAME 3 */
-    .card-4 { top: 62%; left: 22%; }    /* NAME 4 */
+    /* При ховере увеличиваем строго в 1.5 раза и поднимаем z-index */
+    .project-card:hover {
+      background-color: var(--neon-pink);
+      transform: scale(1.5);
+      box-shadow: 0 1rem 2.5rem rgba(249, 143, 200, 0.4);
+      z-index: 50;
+    }
 
-    .card-5 { top: 26%; right: 29%; }   /* NAME 5 */
-    .card-6 { top: 62%; right: 29%; }   /* NAME 6 */
-    .card-7 { top: 40%; right: 19%; }   /* NAME 7 */
-    .card-8 { top: 15%; right: 10%; }   /* NAME 8 */
+    /* Расположение карточек «облаком» вокруг персонажа (в процентах) */
+    .card-1 { top: 38%; left: 12%; }    /* NAME 1 */
+    .card-2 { top: 16%; left: 24%; }    /* NAME 2 */
+    .card-3 { top: 38%; left: 31%; }    /* NAME 3 */
+    .card-4 { top: 60%; left: 24%; }    /* NAME 4 */
+
+    .card-5 { top: 27%; right: 31%; }   /* NAME 5 */
+    .card-6 { top: 60%; right: 31%; }   /* NAME 6 */
+    .card-7 { top: 40%; right: 21%; }   /* NAME 7 */
+    .card-8 { top: 16%; right: 12%; }   /* NAME 8 */
 
     /* ==========================================================================
        НИЖНИЙ СТЕКЛЯННЫЙ PILL-ДОК
@@ -395,6 +406,7 @@
       font-size: 0.95rem;
     }
 
+    /* Мобильная адаптация */
     @media (max-width: 900px) {
       body { overflow-y: auto !important; height: auto !important; }
       .projects-container {
@@ -406,6 +418,7 @@
         gap: 1.5rem;
         padding: 1.5rem;
         width: 100% !important;
+        height: auto !important;
       }
       .project-card {
         position: relative;
@@ -451,7 +464,7 @@
     <div class="experience-right">6 лет опыта</div>
   </div>
 
-  <!-- 8 Карточек проектов (Строго в rem на базе 1920px) -->
+  <!-- 8 Карточек проектов (Строго в rem с динамическим масштабированием) -->
   <div class="projects-container">
     <div class="project-card card-1" onclick="openPopup('name1')">
       <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300&q=80');"></div>
@@ -515,7 +528,7 @@
     </div>
     <div class="dock-divider"></div>
     <a href="https://t.me/your_telegram" target="_blank" class="dock-item icon-tg" title="Telegram">✈</a>
-    <a href="mailto:your_email@gmail.com" class="dock-item icon-mail" title="Email">✉</a>
+    <a href="/cdn-cgi/l/email-protection#f38a9c8681ac969e929a9fb3949e929a9fdd909c9e" class="dock-item icon-mail" title="Email">✉</a>
   </div>
 
   <!-- Попап -->
@@ -529,7 +542,7 @@
     </div>
   </div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     const cursor = document.getElementById('custom-cursor');
     document.addEventListener('mousemove', (e) => {
       cursor.style.left = e.clientX + 'px';
@@ -546,7 +559,7 @@
       name7: { title: "NAME 7", text: "NAME 7. Промо-страница и интерактив." },
       name8: { title: "NAME 8", text: "NAME 8. Комплексный дизайн-проект." },
       cv: { title: "Наташа — CV", text: "Графический и бренд-дизайнер с 6-летним опытом. Создаю яркие визуальные системы, айдентику и цифровые продукты.<br><br><b>Email:</b> natasha@design.com<br><b>Telegram:</b> @natasha_design" },
-      dprofile: { title: "Dprofile Portfolio", text: "Profile on Dprofile with cases and awards." },
+      dprofile: { title: "Profile", text: "Profile on Dprofile with cases and awards." },
       item2: { title: "Дополнительный блок", text: "Интервью, публикации и статьи о дизайне." },
       all: { title: "All Projects", text: "Общий архив всех дизайн-проектов за 6 лет." }
     };
