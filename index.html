@@ -31,7 +31,7 @@
       color: var(--neon-teal);
       width: 100vw;
       height: 100vh;
-      overflow: hidden;
+      overflow: hidden; /* Жесткий запрет на скролл */
       position: relative;
     }
 
@@ -73,28 +73,12 @@
       pointer-events: none;
     }
 
-    /* ==========================================================================
-       12-КОЛОНОЧНАЯ СЕТКА ИЗ ФИГМЫ
-       Margin: 20px, Gutter: 16px
-       ========================================================================== */
-    .container-grid {
-      position: absolute;
-      inset: 0;
-      margin-left: 20px;
-      margin-right: 20px;
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 16px; /* Gutter 16px */
-      pointer-events: none;
-      z-index: 5;
-    }
-
-    /* Верхняя панель (выравнивание по сетке) */
+    /* Верхняя панель */
     .top-bar {
       position: absolute;
-      top: 30px;
-      left: 20px;
-      right: 20px;
+      top: 24px;
+      left: 30px;
+      right: 30px;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -103,7 +87,7 @@
 
     .nav-left {
       font-family: var(--font-projects);
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 600;
       color: var(--neon-pink);
       text-decoration: none;
@@ -117,7 +101,7 @@
 
     .bio-title {
       font-family: var(--font-projects);
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 600;
       color: var(--neon-teal);
       margin-bottom: 2px;
@@ -125,7 +109,7 @@
 
     .bio-subtitle {
       font-family: var(--font-projects);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 500;
       color: var(--neon-teal);
       opacity: 0.9;
@@ -133,7 +117,7 @@
 
     .experience-right {
       font-family: var(--font-projects);
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 600;
       color: var(--neon-pink);
     }
@@ -141,9 +125,9 @@
     /* Футер-теги */
     .footer-tags {
       position: absolute;
-      bottom: 25px;
-      left: 20px;
-      right: 20px;
+      bottom: 20px;
+      left: 30px;
+      right: 30px;
       display: flex;
       justify-content: space-between;
       z-index: 10;
@@ -152,19 +136,19 @@
 
     .tag-item {
       font-family: var(--font-projects);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 500;
       color: var(--neon-teal);
     }
 
-    /* Центральный маскот */
+    /* Центральный маскот (гарантированно помещается в 100vh) */
     .mascot-container {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: min(420px, 45vw);
-      height: 60vh;
+      width: min(340px, 35vw);
+      height: 50vh;
       z-index: 3;
       pointer-events: none;
       display: flex;
@@ -179,51 +163,67 @@
     }
 
     /* ==========================================================================
-       8 КАРТОЧЕК ПРОЕКТОВ (Привязаны к колонкам 12-колоночной сетки)
-       Размер: w 142px, h 154px, скругление 8px
-       Черная плашка: w 126px, h 100px, скругление 8px, отступ сверху 8px
+       АДАПТИВНАЯ СЕТКА ВИДЖЕТОВ (Идеально масштабируется в пределах 100vh)
+       Используем пропорциональные единицы clamp() для адаптивности на любых экранах
        ========================================================================== */
+    .projects-container {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
     .project-card {
       position: absolute;
       pointer-events: auto;
-      width: 142px;
-      height: 154px;
+      
+      /* Адаптивные размеры на основе пропорций Figma (142x154), пропорционально уменьшающиеся на ноутбуках */
+      width: clamp(100px, 9vw, 130px);
+      height: clamp(110px, 10vw, 140px);
+      
       background-color: var(--neon-teal);
       border-radius: 8px;
-      padding: 8px 8px 0 8px;
+      padding: clamp(6px, 0.6vw, 8px) clamp(6px, 0.6vw, 8px) 0 clamp(6px, 0.6vw, 8px);
+      
       display: flex;
       flex-direction: column;
       align-items: center;
-      box-shadow: 0 8px 25px rgba(32, 234, 167, 0.2);
+      box-sizing: border-box;
+      box-shadow: 0 6px 20px rgba(32, 234, 167, 0.2);
       cursor: none;
       transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       transform-origin: center center;
     }
 
+    /* Ховер: плавное увеличение ровно в 1.5 раза с мягкой розовой подсветкой */
     .project-card:hover {
       background-color: var(--neon-pink);
       transform: scale(1.5);
-      box-shadow: 0 15px 40px rgba(249, 143, 200, 0.4);
+      box-shadow: 0 12px 35px rgba(249, 143, 200, 0.4);
       z-index: 100;
     }
 
+    /* Черное превью внутри плашки (адаптивная пропорция от 126x100) */
     .card-preview {
-      width: 126px;
-      height: 100px;
+      width: 100%;
+      height: clamp(70px, 6.5vw, 92px);
       background-color: #121514;
-      border-radius: 8px;
+      border-radius: 6px;
       background-size: cover;
       background-position: center;
       flex-shrink: 0;
     }
 
+    /* Текст названия (NAME 1 - 8) */
     .card-label {
       font-family: var(--font-projects);
-      font-size: 13px;
+      font-size: clamp(10px, 0.85vw, 12px);
       font-weight: 700;
       color: var(--text-dark);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       text-align: center;
       width: 100%;
       display: flex;
@@ -232,33 +232,23 @@
       flex-grow: 1;
     }
 
-    /* Точные координаты карточек на основе 12 колонок с Margin 20px и Gutter 16px */
-    .card-1 { top: 40%; grid-column: 1 / span 2; justify-self: start; }   /* Слева (1-2 колонки) */
-    .card-2 { top: 16%; grid-column: 2 / span 2; justify-self: center; } /* Слева сверху */
-    .card-3 { top: 39%; grid-column: 3 / span 2; justify-self: center; } /* Ближе к центру слева */
-    .card-4 { top: 62%; grid-column: 2 / span 2; justify-self: center; } /* Снизу слева */
+    /* Точные процентные координаты для 8 карточек, гарантирующие отсутствие скролла */
+    .card-1 { top: 42%; left: 8%; }     /* NAME 1 */
+    .card-2 { top: 18%; left: 21%; }    /* NAME 2 */
+    .card-3 { top: 40%; left: 29%; }    /* NAME 3 */
+    .card-4 { top: 61%; left: 21%; }    /* NAME 4 */
 
-    .card-5 { top: 28%; grid-column: 9 / span 2; justify-self: center; }  /* Справа сверху */
-    .card-6 { top: 62%; grid-column: 9 / span 2; justify-self: center; }  /* Снизу справа */
-    .card-7 { top: 41%; grid-column: 10 / span 2; justify-self: center; } /* Справа по центру */
-    .card-8 { top: 16%; grid-column: 11 / span 2; justify-self: end; }    /* Справа вверху (11-12 колонки) */
-
-    /* Превращаем сетку в абсолютный контейнер для карточек */
-    .projects-grid-wrapper {
-      position: absolute;
-      inset: 0;
-      max-width: 1400px;
-      margin: 0 auto;
-      pointer-events: none;
-      z-index: 5;
-    }
+    .card-5 { top: 29%; right: 29%; }   /* NAME 5 */
+    .card-6 { top: 61%; right: 29%; }   /* NAME 6 */
+    .card-7 { top: 41%; right: 18%; }   /* NAME 7 */
+    .card-8 { top: 18%; right: 9%; }    /* NAME 8 */
 
     /* ==========================================================================
        НИЖНИЙ СТЕКЛЯННЫЙ PILL-ДОК
        ========================================================================== */
     .dock-wrapper {
       position: absolute;
-      bottom: 25px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
@@ -268,27 +258,27 @@
       backdrop-filter: blur(25px);
       border: 1px solid rgba(32, 234, 167, 0.3);
       border-radius: 50px;
-      padding: 8px 16px;
-      gap: 14px;
+      padding: 6px 14px;
+      gap: 12px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.4);
     }
 
     .pill-cv {
       font-family: var(--font-projects);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 700;
       color: var(--neon-teal);
       background: transparent;
       border: none;
       text-transform: uppercase;
-      padding: 0 6px;
+      padding: 0 4px;
       cursor: none;
     }
     .pill-cv:hover { opacity: 0.8; }
 
     .dock-divider {
       width: 1px;
-      height: 28px;
+      height: 24px;
       background-color: rgba(32, 234, 167, 0.25);
     }
 
@@ -296,12 +286,12 @@
       background: #FFFFFF;
       color: #121514;
       font-family: var(--font-projects);
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 10px;
+      padding: 2px 6px;
+      border-radius: 8px;
       position: absolute;
-      top: -24px;
+      top: -22px;
       left: 50%;
       transform: translateX(-50%);
       white-space: nowrap;
@@ -310,8 +300,8 @@
 
     .dock-item {
       position: relative;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: #121514;
       border: 1px solid rgba(32, 234, 167, 0.4);
@@ -320,7 +310,7 @@
       justify-content: center;
       color: var(--neon-teal);
       text-decoration: none;
-      font-size: 1rem;
+      font-size: 0.9rem;
       transition: transform 0.2s, background-color 0.2s;
       cursor: none;
     }
@@ -399,28 +389,32 @@
       font-size: 0.95rem;
     }
 
+    /* Мобильная адаптация */
     @media (max-width: 900px) {
       body { overflow-y: auto !important; height: auto !important; }
-      .projects-grid-wrapper {
+      .projects-container {
         position: relative;
-        margin-top: 140px;
-        margin-bottom: 180px;
+        margin-top: 120px;
+        margin-bottom: 160px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        gap: 16px;
         padding: 20px;
+        width: 100% !important;
       }
       .project-card {
         position: relative;
         top: auto !important; left: auto !important; right: auto !important;
         transform: none !important;
+        width: 100% !important;
+        height: auto !important;
       }
       .mascot-container {
         position: fixed;
         bottom: 0;
         opacity: 0.3;
         width: 100%;
-        height: 50vh;
+        height: 40vh;
       }
     }
   </style>
@@ -442,7 +436,7 @@
 
   <div class="glow-overlay"></div>
 
-  <!-- Верхняя панель (по сетке) -->
+  <!-- Верхняя панель -->
   <div class="top-bar">
     <a href="#" class="nav-left" onclick="openPopup('all')">Все проекты</a>
     <div class="bio-center">
@@ -452,8 +446,8 @@
     <div class="experience-right">6 лет опыта</div>
   </div>
 
-  <!-- 8 Карточек проектов, выровненных по 12-колоночной сетке (Margin: 20px, Gutter: 16px) -->
-  <div class="projects-grid-wrapper">
+  <!-- 8 Карточек проектов (С адаптированными пропорциями Figma под 100vh) -->
+  <div class="projects-container">
     <div class="project-card card-1" onclick="openPopup('name1')">
       <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300&q=80');"></div>
       <div class="card-label">NAME 1</div>
@@ -495,7 +489,7 @@
     </video>
   </div>
 
-  <!-- Футер теги (по сетке) -->
+  <!-- Футер теги -->
   <div class="footer-tags">
     <div class="tag-item">{брендинг}</div>
     <div class="tag-item">{вэб-дизайн}</div>
@@ -516,7 +510,7 @@
     </div>
     <div class="dock-divider"></div>
     <a href="https://t.me/your_telegram" target="_blank" class="dock-item icon-tg" title="Telegram">✈</a>
-    <a href="mailto:your_email@gmail.com" class="dock-item icon-mail" title="Email">✉</a>
+    <a href="/cdn-cgi/l/email-protection#dba2b4aea984beb6bab2b79bbcb6bab2b7f5b8b4b6" class="dock-item icon-mail" title="Email">✉</a>
   </div>
 
   <!-- Попап -->
@@ -530,7 +524,7 @@
     </div>
   </div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     const cursor = document.getElementById('custom-cursor');
     document.addEventListener('mousemove', (e) => {
       cursor.style.left = e.clientX + 'px';
@@ -542,10 +536,10 @@
       name2: { title: "NAME 2", text: "Подробное описание проекта Name 2. Создание современного визуального стиля." },
       name3: { title: "NAME 3", text: "Подробное описание проекта Name 3. Дизайн интерфейсов и веб-разработка." },
       name4: { title: "NAME 4", text: "Подробное описание проекта Name 4. Коммуникационный дизайн и иллюстрации." },
-      name5: { title: "NAME 5", text: "Подробное описание проекта Name 5. Креативная концепция и рекламные материалы." },
-      name6: { title: "NAME 6", text: "Подробное описание проекта Name 6. Оформление бренда и упаковки." },
-      name7: { title: "NAME 7", text: "Подробное описание проекта Name 7. Промо-страница и интерактив." },
-      name8: { title: "NAME 8", text: "Подробное описание проекта Name 8. Комплексный дизайн-проект." },
+      name5: { title: "NAME 5", text: "NAME 5. Креативная концепция и рекламные материалы." },
+      name6: { title: "NAME 6", text: "NAME 6. Оформление бренда и упаковки." },
+      name7: { title: "NAME 7", text: "NAME 7. Промо-страница и интерактив." },
+      name8: { title: "NAME 8", text: "NAME 8. Комплексный дизайн-проект." },
       cv: { title: "Наташа — CV", text: "Графический и бренд-дизайнер с 6-летним опытом. Создаю яркие визуальные системы, айдентику и цифровые продукты.<br><br><b>Email:</b> natasha@design.com<br><b>Telegram:</b> @natasha_design" },
       dprofile: { title: "Dprofile Portfolio", text: "Профиль на платформе Dprofile с полными кейсами и наградами." },
       item2: { title: "Дополнительный блок", text: "Интервью, публикации и статьи о дизайне." },
@@ -554,7 +548,7 @@
 
     function openPopup(key) {
       const p = DATA[key];
-      if (!p) return;
+    if (!p) return;
       document.getElementById('modal-title').innerText = p.title;
       document.getElementById('modal-desc').innerHTML = p.text;
       document.getElementById('popup-overlay').classList.add('active');
