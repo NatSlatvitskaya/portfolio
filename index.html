@@ -31,7 +31,7 @@
       color: var(--neon-teal);
       width: 100vw;
       height: 100vh;
-      overflow: hidden; /* Жесткий запрет на скролл */
+      overflow: hidden;
       position: relative;
     }
 
@@ -141,14 +141,14 @@
       color: var(--neon-teal);
     }
 
-    /* Центральный маскот (гарантированно помещается в 100vh) */
+    /* Центральный маскот */
     .mascot-container {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: min(340px, 35vw);
-      height: 50vh;
+      width: min(380px, 40vw);
+      height: 55vh;
       z-index: 3;
       pointer-events: none;
       display: flex;
@@ -163,8 +163,8 @@
     }
 
     /* ==========================================================================
-       АДАПТИВНАЯ СЕТКА ВИДЖЕТОВ (Идеально масштабируется в пределах 100vh)
-       Используем пропорциональные единицы clamp() для адаптивности на любых экранах
+       8 КАРТОЧЕК ПРОЕКТОВ (Строго по пикселям из Figma: 142px x 154px)
+       Размер фиксирован в px в точности с вашим макетом
        ========================================================================== */
     .projects-container {
       position: absolute;
@@ -179,13 +179,13 @@
       position: absolute;
       pointer-events: auto;
       
-      /* Адаптивные размеры на основе пропорций Figma (142x154), пропорционально уменьшающиеся на ноутбуках */
-      width: clamp(100px, 9vw, 130px);
-      height: clamp(110px, 10vw, 140px);
+      /* Строгие размеры из Figma */
+      width: 142px;
+      height: 154px;
       
       background-color: var(--neon-teal);
       border-radius: 8px;
-      padding: clamp(6px, 0.6vw, 8px) clamp(6px, 0.6vw, 8px) 0 clamp(6px, 0.6vw, 8px);
+      padding: 8px 8px 0 8px; /* Отступ 8px сверху */
       
       display: flex;
       flex-direction: column;
@@ -197,20 +197,20 @@
       transform-origin: center center;
     }
 
-    /* Ховер: плавное увеличение ровно в 1.5 раза с мягкой розовой подсветкой */
+    /* Ховер: увеличение в 1.5 раза и цвет #F98FC8 */
     .project-card:hover {
       background-color: var(--neon-pink);
       transform: scale(1.5);
-      box-shadow: 0 12px 35px rgba(249, 143, 200, 0.4);
+      box-shadow: 0 15px 40px rgba(249, 143, 200, 0.4);
       z-index: 100;
     }
 
-    /* Черное превью внутри плашки (адаптивная пропорция от 126x100) */
+    /* Черная плашка внутри: 126px x 100px */
     .card-preview {
-      width: 100%;
-      height: clamp(70px, 6.5vw, 92px);
+      width: 126px;
+      height: 100px;
       background-color: #121514;
-      border-radius: 6px;
+      border-radius: 8px;
       background-size: cover;
       background-position: center;
       flex-shrink: 0;
@@ -219,11 +219,11 @@
     /* Текст названия (NAME 1 - 8) */
     .card-label {
       font-family: var(--font-projects);
-      font-size: clamp(10px, 0.85vw, 12px);
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-dark);
       text-transform: uppercase;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.5px;
       text-align: center;
       width: 100%;
       display: flex;
@@ -232,16 +232,16 @@
       flex-grow: 1;
     }
 
-    /* Точные процентные координаты для 8 карточек, гарантирующие отсутствие скролла */
-    .card-1 { top: 42%; left: 8%; }     /* NAME 1 */
-    .card-2 { top: 18%; left: 21%; }    /* NAME 2 */
-    .card-3 { top: 40%; left: 29%; }    /* NAME 3 */
-    .card-4 { top: 61%; left: 21%; }    /* NAME 4 */
+    /* Позиционирование 8 карточек вокруг кота на точных процентных координатах */
+    .card-1 { top: 41%; left: 8%; }     /* NAME 1 */
+    .card-2 { top: 16%; left: 22%; }    /* NAME 2 */
+    .card-3 { top: 38%; left: 30%; }    /* NAME 3 */
+    .card-4 { top: 61%; left: 22%; }    /* NAME 4 */
 
-    .card-5 { top: 29%; right: 29%; }   /* NAME 5 */
-    .card-6 { top: 61%; right: 29%; }   /* NAME 6 */
-    .card-7 { top: 41%; right: 18%; }   /* NAME 7 */
-    .card-8 { top: 18%; right: 9%; }    /* NAME 8 */
+    .card-5 { top: 27%; right: 30%; }   /* NAME 5 */
+    .card-6 { top: 61%; right: 30%; }   /* NAME 6 */
+    .card-7 { top: 40%; right: 19%; }   /* NAME 7 */
+    .card-8 { top: 16%; right: 9%; }    /* NAME 8 */
 
     /* ==========================================================================
        НИЖНИЙ СТЕКЛЯННЫЙ PILL-ДОК
@@ -389,7 +389,6 @@
       font-size: 0.95rem;
     }
 
-    /* Мобильная адаптация */
     @media (max-width: 900px) {
       body { overflow-y: auto !important; height: auto !important; }
       .projects-container {
@@ -446,7 +445,7 @@
     <div class="experience-right">6 лет опыта</div>
   </div>
 
-  <!-- 8 Карточек проектов (С адаптированными пропорциями Figma под 100vh) -->
+  <!-- 8 Карточек проектов (Строго по пикселям из Figma: 142px x 154px) -->
   <div class="projects-container">
     <div class="project-card card-1" onclick="openPopup('name1')">
       <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300&q=80');"></div>
@@ -510,7 +509,7 @@
     </div>
     <div class="dock-divider"></div>
     <a href="https://t.me/your_telegram" target="_blank" class="dock-item icon-tg" title="Telegram">✈</a>
-    <a href="/cdn-cgi/l/email-protection#dba2b4aea984beb6bab2b79bbcb6bab2b7f5b8b4b6" class="dock-item icon-mail" title="Email">✉</a>
+    <a href="/cdn-cgi/l/email-protection#6d1402181f3208000c04012d0a000c0401430e0200" class="dock-item icon-mail" title="Email">✉</a>
   </div>
 
   <!-- Попап -->
@@ -541,14 +540,14 @@
       name7: { title: "NAME 7", text: "NAME 7. Промо-страница и интерактив." },
       name8: { title: "NAME 8", text: "NAME 8. Комплексный дизайн-проект." },
       cv: { title: "Наташа — CV", text: "Графический и бренд-дизайнер с 6-летним опытом. Создаю яркие визуальные системы, айдентику и цифровые продукты.<br><br><b>Email:</b> natasha@design.com<br><b>Telegram:</b> @natasha_design" },
-      dprofile: { title: "Dprofile Portfolio", text: "Профиль на платформе Dprofile с полными кейсами и наградами." },
+      dprofile: { title: "Dprofile Portfolio", text: "Profile on Dprofile with cases and awards." },
       item2: { title: "Дополнительный блок", text: "Интервью, публикации и статьи о дизайне." },
-      all: { title: "All Projects", text: "Общий архив всех коммерческих и некоммерческих дизайн-проектов за 6 лет." }
+      all: { title: "All Projects", text: "Общий архив всех дизайн-проектов за 6 лет." }
     };
 
     function openPopup(key) {
       const p = DATA[key];
-    if (!p) return;
+      if (!p) return;
       document.getElementById('modal-title').innerText = p.title;
       document.getElementById('modal-desc').innerHTML = p.text;
       document.getElementById('popup-overlay').classList.add('active');
