@@ -48,7 +48,7 @@
       transition: transform 0.05s ease;
     }
 
-    /* Фоновое зацикленное видео */
+    /* Фоновое видео */
     .bg-video-container {
       position: absolute;
       inset: 0;
@@ -73,15 +73,28 @@
       pointer-events: none;
     }
 
-    /* Верхняя панель */
+    /* ==========================================================================
+       12-КОЛОНОЧНАЯ СЕТКА ИЗ ФИГМЫ
+       Margin: 20px, Gutter: 16px
+       ========================================================================== */
+    .container-grid {
+      position: absolute;
+      inset: 0;
+      margin-left: 20px;
+      margin-right: 20px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px; /* Gutter 16px */
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Верхняя панель (выравнивание по сетке) */
     .top-bar {
       position: absolute;
       top: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 1400px;
-      padding: 0 40px;
+      left: 20px;
+      right: 20px;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -129,8 +142,8 @@
     .footer-tags {
       position: absolute;
       bottom: 25px;
-      left: 40px;
-      right: 40px;
+      left: 20px;
+      right: 20px;
       display: flex;
       justify-content: space-between;
       z-index: 10;
@@ -166,57 +179,44 @@
     }
 
     /* ==========================================================================
-       8 КАРТОЧЕК ПРОЕКТОВ (Зеленая плашка #20EAA7, текст #242424, на ховере увеличивается и становится #F98FC8)
+       8 КАРТОЧЕК ПРОЕКТОВ (Привязаны к колонкам 12-колоночной сетки)
+       Размер: w 142px, h 154px, скругление 8px
+       Черная плашка: w 126px, h 100px, скругление 8px, отступ сверху 8px
        ========================================================================== */
-    .projects-container {
-      position: absolute;
-      inset: 0;
-      z-index: 5;
-      pointer-events: none;
-    }
-
     .project-card {
       position: absolute;
       pointer-events: auto;
+      width: 142px;
+      height: 154px;
+      background-color: var(--neon-teal);
+      border-radius: 8px;
+      padding: 8px 8px 0 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      background-color: var(--neon-teal); /* Дефолтное состояние: зеленая плашка */
-      border-radius: 16px;
-      padding: 12px;
-      box-shadow: 0 8px 25px rgba(32, 234, 167, 0.25);
+      box-shadow: 0 8px 25px rgba(32, 234, 167, 0.2);
       cursor: none;
-      /* Плавный переход для увеличения и смены цвета */
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       transform-origin: center center;
     }
 
-    /* На ховере: плашка увеличивается и становится розовой #F98FC8 */
     .project-card:hover {
       background-color: var(--neon-pink);
-      transform: scale(1.18) translateY(-6px);
-      box-shadow: 0 12px 35px rgba(249, 143, 200, 0.4);
+      transform: scale(1.5);
+      box-shadow: 0 15px 40px rgba(249, 143, 200, 0.4);
+      z-index: 100;
     }
 
-    /* Внутреннее превью проекта */
     .card-preview {
-      width: 100px;
-      height: 70px;
-      background-color: #1a2420;
-      border-radius: 10px;
+      width: 126px;
+      height: 100px;
+      background-color: #121514;
+      border-radius: 8px;
       background-size: cover;
       background-position: center;
-      transition: width 0.3s, height 0.3s;
+      flex-shrink: 0;
     }
 
-    /* При ховере на плашку превью тоже пропорционально увеличивается */
-    .project-card:hover .card-preview {
-      width: 135px;
-      height: 95px;
-    }
-
-    /* Текст NAME 1 - NAME 8 (Цвет текста всегда черный #242424) */
     .card-label {
       font-family: var(--font-projects);
       font-size: 13px;
@@ -225,18 +225,33 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       text-align: center;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
     }
 
-    /* Точное позиционирование 8 карточек по макету */
-    .card-1 { top: 40%; left: 6%; }     /* NAME 1 */
-    .card-2 { top: 16%; left: 20%; }    /* NAME 2 */
-    .card-3 { top: 39%; left: 28%; }    /* NAME 3 */
-    .card-4 { top: 62%; left: 20%; }    /* NAME 4 */
+    /* Точные координаты карточек на основе 12 колонок с Margin 20px и Gutter 16px */
+    .card-1 { top: 40%; grid-column: 1 / span 2; justify-self: start; }   /* Слева (1-2 колонки) */
+    .card-2 { top: 16%; grid-column: 2 / span 2; justify-self: center; } /* Слева сверху */
+    .card-3 { top: 39%; grid-column: 3 / span 2; justify-self: center; } /* Ближе к центру слева */
+    .card-4 { top: 62%; grid-column: 2 / span 2; justify-self: center; } /* Снизу слева */
 
-    .card-5 { top: 28%; right: 28%; }   /* NAME 5 */
-    .card-6 { top: 62%; right: 28%; }   /* NAME 6 */
-    .card-7 { top: 41%; right: 17%; }   /* NAME 7 */
-    .card-8 { top: 16%; right: 8%; }    /* NAME 8 */
+    .card-5 { top: 28%; grid-column: 9 / span 2; justify-self: center; }  /* Справа сверху */
+    .card-6 { top: 62%; grid-column: 9 / span 2; justify-self: center; }  /* Снизу справа */
+    .card-7 { top: 41%; grid-column: 10 / span 2; justify-self: center; } /* Справа по центру */
+    .card-8 { top: 16%; grid-column: 11 / span 2; justify-self: end; }    /* Справа вверху (11-12 колонки) */
+
+    /* Превращаем сетку в абсолютный контейнер для карточек */
+    .projects-grid-wrapper {
+      position: absolute;
+      inset: 0;
+      max-width: 1400px;
+      margin: 0 auto;
+      pointer-events: none;
+      z-index: 5;
+    }
 
     /* ==========================================================================
        НИЖНИЙ СТЕКЛЯННЫЙ PILL-ДОК
@@ -348,7 +363,7 @@
       overflow-y: auto;
       padding: 36px;
       position: relative;
-      box-shadow: 0 0 30px rgba(32, 234, 167, 0.25);
+      box-shadow: 0 0 30px rgba(32, 226, 152, 0.25);
     }
 
     .popup-close {
@@ -386,7 +401,7 @@
 
     @media (max-width: 900px) {
       body { overflow-y: auto !important; height: auto !important; }
-      .projects-container {
+      .projects-grid-wrapper {
         position: relative;
         margin-top: 140px;
         margin-bottom: 180px;
@@ -427,7 +442,7 @@
 
   <div class="glow-overlay"></div>
 
-  <!-- Верхняя панель -->
+  <!-- Верхняя панель (по сетке) -->
   <div class="top-bar">
     <a href="#" class="nav-left" onclick="openPopup('all')">Все проекты</a>
     <div class="bio-center">
@@ -437,8 +452,8 @@
     <div class="experience-right">6 лет опыта</div>
   </div>
 
-  <!-- 8 Карточек проектов (С точным соответствием макету: фон #20EAA7, текст #242424, ховер в #F98FC8 и увеличение) -->
-  <div class="projects-container">
+  <!-- 8 Карточек проектов, выровненных по 12-колоночной сетке (Margin: 20px, Gutter: 16px) -->
+  <div class="projects-grid-wrapper">
     <div class="project-card card-1" onclick="openPopup('name1')">
       <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300&q=80');"></div>
       <div class="card-label">NAME 1</div>
@@ -480,7 +495,7 @@
     </video>
   </div>
 
-  <!-- Футер теги -->
+  <!-- Футер теги (по сетке) -->
   <div class="footer-tags">
     <div class="tag-item">{брендинг}</div>
     <div class="tag-item">{вэб-дизайн}</div>
