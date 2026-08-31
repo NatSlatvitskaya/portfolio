@@ -81,7 +81,7 @@
       width: 50vw;
       height: 50vw;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(0, 255, 204, 0.15) 0%, rgba(0, 255, 204, 0.05) 40%, rgba(0, 0, 0, 0) 70%);
+      background: radial-gradient(circle, rgba(32, 234, 167, 0.35) 0%, rgba(32, 234, 167, 0.12) 45%, rgba(0, 0, 0, 0) 70%);
       border-radius: 50%;
       pointer-events: none;
       z-index: 2;
@@ -90,33 +90,40 @@
       opacity: 0;
     }
 
-    /* Верхняя панель */
+    /* ==========================================================================
+       ВЕРХНЯЯ ПАНЕЛЬ: ВЫРАВНИВАНИЕ ПО 12-КОЛОНОЧНОЙ СЕТКЕ (Margin: 20px, Gutter: 16px)
+       ========================================================================== */
     .top-bar {
       position: absolute;
       top: 30px;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
-      max-width: 1400px;
-      padding: 0 40px;
-      display: flex;
-      justify-content: space-between;
+      max-width: 1920px;
+      padding: 0 20px; /* Сетка Margin: 20px */
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px; /* Gutter: 16px */
       align-items: flex-start;
       z-index: 10;
     }
 
     .nav-left {
+      grid-column: 1 / span 2;
       font-family: var(--font-projects);
       font-size: 1.15rem;
       font-weight: 600;
       color: var(--neon-pink);
       text-decoration: none;
       transition: opacity 0.2s;
+      justify-self: start;
     }
     .nav-left:hover { opacity: 0.8; }
 
     .bio-center {
+      grid-column: 5 / span 4;
       text-align: center;
+      justify-self: center;
     }
 
     .bio-title {
@@ -136,20 +143,29 @@
     }
 
     .experience-right {
+      grid-column: 11 / span 2;
       font-family: var(--font-projects);
       font-size: 1.15rem;
       font-weight: 600;
       color: var(--neon-pink);
+      justify-self: end;
+      text-align: right;
     }
 
-    /* Футер-теги */
+    /* ==========================================================================
+       ФУТЕР-ТЕГИ: ВЫРАВНИВАНИЕ ПО 12-КОЛОНОЧНОЙ СЕТКЕ (Margin: 20px, Gutter: 16px)
+       ========================================================================== */
     .footer-tags {
       position: absolute;
       bottom: 25px;
-      left: 40px;
-      right: 40px;
-      display: flex;
-      justify-content: space-between;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 1920px;
+      padding: 0 20px; /* Сетка Margin: 20px */
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px; /* Gutter: 16px */
       z-index: 10;
       pointer-events: none;
     }
@@ -159,6 +175,23 @@
       font-size: 0.9rem;
       font-weight: 500;
       color: var(--neon-teal);
+    }
+
+    .footer-tags .tag-item:nth-child(1) {
+      grid-column: 1 / span 2;
+      justify-self: start;
+    }
+    .footer-tags .tag-item:nth-child(2) {
+      grid-column: 3 / span 2;
+      justify-self: center;
+    }
+    .footer-tags .tag-item:nth-child(3) {
+      grid-column: 9 / span 2;
+      justify-self: center;
+    }
+    .footer-tags .tag-item:nth-child(4) {
+      grid-column: 11 / span 2;
+      justify-self: end;
     }
 
     /* Центральный маскот */
@@ -183,7 +216,7 @@
     }
 
     /* ==========================================================================
-       8 КАРТОЧЕК ПРОЕКТОВ (Возврат к исходному идеальному расположению "облаком" вокруг персонажа + эффект свечения)
+       8 КАРТОЧЕК ПРОЕКТОВ (Облако оставлено как есть — абсолютное позиционирование)
        ========================================================================== */
     .projects-container {
       position: absolute;
@@ -198,7 +231,6 @@
       position: absolute;
       pointer-events: auto;
       
-      /* Точные размеры из Figma */
       width: 142px;
       height: 154px;
       
@@ -216,7 +248,6 @@
       transform-origin: center center;
     }
 
-    /* Ховер: увеличение в 1.5 раза и цвет #F98FC8 */
     .project-card:hover {
       background-color: var(--neon-pink);
       transform: scale(1.5);
@@ -224,7 +255,6 @@
       z-index: 100;
     }
 
-    /* Черная плашка внутри: 126px x 100px */
     .card-preview {
       width: 126px;
       height: 100px;
@@ -235,7 +265,6 @@
       flex-shrink: 0;
     }
 
-    /* Текст названия (NAME 1 - 8) */
     .card-label {
       font-family: var(--font-projects);
       font-size: 13px;
@@ -455,7 +484,7 @@
   <!-- Мягкое неоновое свечение за курсором -->
   <div class="cursor-glow" id="cursor-glow"></div>
 
-  <!-- Верхняя панель -->
+  <!-- Верхняя панель (Сетка 12 колонок) -->
   <div class="top-bar">
     <a href="#" class="nav-left" onclick="openPopup('all')">Все проекты</a>
     <div class="bio-center">
@@ -465,7 +494,7 @@
     <div class="experience-right">6 лет опыта</div>
   </div>
 
-  <!-- 8 Карточек проектов (В идеальном исходном расположении) -->
+  <!-- 8 Карточек проектов (Облако возвращено в исходный вид) -->
   <div class="projects-container">
     <div class="project-card card-1" onclick="openPopup('name1')">
       <div class="card-preview" style="background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300&q=80');"></div>
@@ -508,7 +537,7 @@
     </video>
   </div>
 
-  <!-- Футер теги -->
+  <!-- Футер-теги (Сетка 12 колонок) -->
   <div class="footer-tags">
     <div class="tag-item">{брендинг}</div>
     <div class="tag-item">{вэб-дизайн}</div>
@@ -529,7 +558,7 @@
     </div>
     <div class="dock-divider"></div>
     <a href="https://t.me/your_telegram" target="_blank" class="dock-item icon-tg" title="Telegram">✈</a>
-    <a href="/cdn-cgi/l/email-protection#ee97819b9cb18b838f8782ae89838f8782c08d8183" class="dock-item icon-mail" title="Email">✉</a>
+    <a href="/cdn-cgi/l/email-protection#c4bdabb1b69ba1a9a5ada884a3a9a5ada8eaa7aba9" class="dock-item icon-mail" title="Email">✉</a>
   </div>
 
   <!-- Попап -->
